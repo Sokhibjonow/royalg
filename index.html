@@ -163,51 +163,132 @@ nav a:hover { color:var(--orange); }
   position:relative; overflow:hidden; background:var(--bg);
   isolation: isolate;
 }
-.hero-bg { position:absolute; inset:0; background:var(--hero-grad); }
+/* Animated noise grain overlay */
+.hero::after {
+  content:''; position:absolute; inset:-50%;
+  width:200%; height:200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:1; opacity:0.6;
+  animation: grain 0.5s steps(2) infinite;
+}
+@keyframes grain { 0%,100%{transform:translate(0,0)} 10%{transform:translate(-2%,-1%)} 20%{transform:translate(1%,2%)} 30%{transform:translate(-1%,1%)} 40%{transform:translate(2%,-2%)} 50%{transform:translate(-1%,0)} 60%{transform:translate(1%,2%)} 70%{transform:translate(0,-1%)} 80%{transform:translate(-2%,1%)} 90%{transform:translate(2%,0)} }
+
+.hero-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 55% 70% at 85% 45%, rgba(255,107,0,0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 50% at 15% 75%, rgba(204,0,0,0.06) 0%, transparent 60%),
+    var(--hero-grad);
+}
+/* Animated orange orb */
+.hero-bg::after {
+  content:''; position:absolute;
+  width:300px; height:300px; border-radius:50%;
+  background: radial-gradient(circle, rgba(255,107,0,0.12) 0%, transparent 70%);
+  top:10%; right:8%; animation: orbPulse 4s ease-in-out infinite;
+  filter: blur(40px);
+}
+@keyframes orbPulse { 0%,100%{transform:scale(1);opacity:0.8} 50%{transform:scale(1.3);opacity:1} }
+
 .hero-content { position:relative; z-index:2; }
 
 .hero-tag {
-  display:inline-block;
-  background:rgba(255,107,0,0.10); border:1px solid rgba(255,107,0,0.35);
-  color:var(--orange); font-size:11px; letter-spacing:3px; text-transform:uppercase;
-  padding:6px 16px; border-radius:2px; margin-bottom:28px;
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(255,107,0,0.08);
+  border:1px solid rgba(255,107,0,0.3);
+  color:var(--orange); font-size:10px; letter-spacing:4px; text-transform:uppercase;
+  padding:7px 18px; border-radius:2px; margin-bottom:32px;
+  backdrop-filter: blur(8px);
 }
+.hero-tag::before {
+  content:''; width:6px; height:6px; border-radius:50%;
+  background:var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+  animation: blink 1.8s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
 .hero h1 {
   font-family:'Oswald',sans-serif;
-  font-size:clamp(40px,5.5vw,76px); font-weight:700;
-  line-height:1.0; text-transform:uppercase; margin-bottom:16px; color:var(--text);
+  font-size:clamp(42px,5.8vw,82px); font-weight:700;
+  line-height:0.95; text-transform:uppercase; margin-bottom:18px; color:var(--text);
+  letter-spacing:-1px;
 }
-.hero h1 em { font-style:normal; color:var(--orange); display:block; }
-.hero-sub { font-size:18px; color:var(--text-muted); margin-bottom:12px; font-weight:300; }
+.hero h1 em {
+  font-style:normal; color:transparent; display:block;
+  -webkit-text-stroke: 2px var(--orange);
+  position:relative;
+}
+body.dark .hero h1 em {
+  -webkit-text-stroke: 2px var(--orange);
+  text-shadow: 0 0 30px rgba(255,107,0,0.4);
+}
+.hero-sub {
+  font-size:17px; color:var(--text-muted); margin-bottom:14px;
+  font-weight:300; letter-spacing:0.3px; line-height:1.6;
+  border-left:3px solid rgba(255,107,0,0.4); padding-left:16px;
+}
 .hero-highlight {
-  font-family:'Oswald',sans-serif; font-size:28px; color:var(--orange); font-weight:600;
-  margin-bottom:36px; display:flex; align-items:center; gap:10px;
+  font-family:'Oswald',sans-serif; font-size:22px; color:var(--text-muted); font-weight:400;
+  margin-bottom:40px; display:flex; align-items:flex-start; gap:14px; line-height:1.4;
+  max-width:480px;
 }
-.hero-highlight::before { content:''; width:40px; height:2px; background:var(--orange); }
+.hero-highlight::before {
+  content:''; min-width:32px; height:2px; background:var(--orange);
+  margin-top:13px; flex-shrink:0;
+}
 
 .btn-primary {
-  display:inline-block; background:var(--orange); color:#fff;
-  padding:15px 32px; font-family:'Oswald',sans-serif;
-  font-size:14px; letter-spacing:2px; text-transform:uppercase;
-  text-decoration:none; border-radius:4px; transition:all 0.3s; cursor:pointer; border:none;
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--orange); color:#fff;
+  padding:16px 34px; font-family:'Oswald',sans-serif;
+  font-size:13px; letter-spacing:2.5px; text-transform:uppercase;
+  text-decoration:none; border-radius:3px; transition:all 0.35s; cursor:pointer; border:none;
+  position:relative; overflow:hidden;
 }
+.btn-primary::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  transform:translateX(-100%); transition:transform 0.5s;
+}
+.btn-primary:hover::after { transform:translateX(100%); }
 .btn-primary:hover {
-  background:var(--orange-light); transform:translateY(-2px);
-  box-shadow:0 12px 36px rgba(255,107,0,0.35);
+  background:var(--orange-light); transform:translateY(-3px);
+  box-shadow:0 16px 40px rgba(255,107,0,0.4), 0 0 0 1px rgba(255,107,0,0.2);
 }
 .btn-secondary {
   display:inline-block; border:1px solid var(--border); color:var(--text);
-  padding:14px 28px; font-family:'Oswald',sans-serif;
-  font-size:14px; letter-spacing:2px; text-transform:uppercase;
-  text-decoration:none; border-radius:4px; transition:all 0.3s; cursor:pointer; background:transparent;
+  padding:15px 28px; font-family:'Oswald',sans-serif;
+  font-size:13px; letter-spacing:2px; text-transform:uppercase;
+  text-decoration:none; border-radius:3px; transition:all 0.3s; cursor:pointer; background:transparent;
 }
-.btn-secondary:hover { border-color:var(--orange); color:var(--orange); }
+.btn-secondary:hover { border-color:var(--orange); color:var(--orange); transform:translateY(-2px); }
 
-.hero-btns { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:48px; }
-.hero-stats { display:flex; gap:36px; flex-wrap:wrap; }
-.stat-item { text-align:center; }
-.stat-num { font-family:'Oswald',sans-serif; font-size:34px; font-weight:700; color:var(--orange); line-height:1; }
-.stat-label { font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
+.hero-btns { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:52px; }
+
+/* Stats redesign — horizontal pill row */
+.hero-stats {
+  display:flex; gap:0; flex-wrap:wrap;
+  border:1px solid var(--border); border-radius:6px;
+  background:var(--surface); overflow:hidden;
+  backdrop-filter:blur(12px); max-width:420px;
+}
+.stat-item {
+  flex:1; text-align:center; padding:16px 12px;
+  border-right:1px solid var(--border); position:relative;
+}
+.stat-item:last-child { border-right:none; }
+.stat-item::before {
+  content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+  width:0; height:2px; background:var(--orange); transition:width 0.4s;
+}
+.stat-item:hover::before { width:60%; }
+.stat-num {
+  font-family:'Oswald',sans-serif; font-size:30px; font-weight:700;
+  color:var(--orange); line-height:1;
+  text-shadow: 0 0 20px rgba(255,107,0,0.3);
+}
+.stat-label { font-size:9px; color:var(--text-faint); text-transform:uppercase; letter-spacing:1.5px; margin-top:5px; }
 
 /* Guitar visual */
 .hero-visual { position:relative; z-index:2; display:flex; justify-content:center; align-items:center; }
@@ -367,72 +448,103 @@ nav a:hover { color:var(--orange); }
 
 
 /* TEACHER SECTION */
-.teacher-section { padding:90px 60px; background:var(--bg); }
-.teacher-card {
-  max-width:900px; margin:48px auto 0;
-  display:grid; grid-template-columns:240px 1fr;
-  gap:52px; align-items:start;
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:12px; padding:48px;
-  box-shadow:var(--card-shadow);
-  position:relative;
-}
-.teacher-card::before {
-  content:''; position:absolute;
-  top:0; left:0; right:0; height:4px;
-  background:linear-gradient(90deg,var(--red),var(--orange));
-}
-.teacher-photo {
-  width:100%; height:240px;
-  background:linear-gradient(135deg,rgba(255,107,0,0.15),rgba(204,0,0,0.08));
-  border-radius:10px; border:1px solid rgba(255,107,0,0.2);
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:12px;
+.teacher-section {
+  padding:100px 60px;
+  background:var(--bg);
   position:relative; overflow:hidden;
 }
-.teacher-photo-icon {
-  font-size:72px; line-height:1;
-  filter:drop-shadow(0 4px 12px rgba(255,107,0,0.3));
+.teacher-section::before {
+  content:'SARVAR'; position:absolute;
+  font-family:'Oswald',sans-serif; font-size:clamp(80px,15vw,160px); font-weight:700;
+  color:transparent; -webkit-text-stroke:1px rgba(255,107,0,0.06);
+  top:50%; right:-2%; transform:translateY(-50%);
+  pointer-events:none; white-space:nowrap; z-index:0;
+  letter-spacing:-4px; text-transform:uppercase;
 }
-.teacher-photo-name {
-  font-family:'Oswald',sans-serif; font-size:14px; font-weight:600;
-  color:var(--orange); letter-spacing:2px; text-transform:uppercase;
+.teacher-card {
+  max-width:960px; margin:52px auto 0;
+  display:grid; grid-template-columns:300px 1fr;
+  gap:60px; align-items:start;
+  position:relative; z-index:1;
+}
+/* No box — borderless editorial style */
+.teacher-photo {
+  width:100%; aspect-ratio:4/5;
+  background:
+    linear-gradient(160deg, rgba(255,107,0,0.18) 0%, rgba(30,10,0,0.6) 100%),
+    linear-gradient(135deg,#1e1208 0%, #2a1a0a 100%);
+  border-radius:4px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:16px;
+  position:relative; overflow:hidden;
+  border:none;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,107,0,0.15);
+}
+.teacher-photo::before {
+  content:''; position:absolute; inset:0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent, transparent 4px,
+    rgba(255,107,0,0.025) 4px, rgba(255,107,0,0.025) 8px
+  );
 }
 .teacher-photo::after {
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 30% 30%,rgba(255,107,0,0.08),transparent 70%);
+  content:''; position:absolute;
+  bottom:0; left:0; right:0; height:50%;
+  background:linear-gradient(to top,rgba(10,5,0,0.8),transparent);
 }
-.teacher-info {}
+.teacher-photo-icon {
+  font-size:88px; line-height:1;
+  filter:drop-shadow(0 8px 24px rgba(255,107,0,0.4));
+  position:relative; z-index:1;
+}
+.teacher-photo-name {
+  font-family:'Oswald',sans-serif; font-size:13px; font-weight:600;
+  color:var(--orange); letter-spacing:4px; text-transform:uppercase;
+  position:relative; z-index:1;
+}
+/* Floating badge */
+.teacher-photo-badge {
+  position:absolute; top:16px; left:-12px;
+  background:var(--orange); color:#fff;
+  font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:2px;
+  padding:6px 14px 6px 18px; text-transform:uppercase;
+  clip-path: polygon(8px 0%, 100% 0%, 100% 100%, 0% 100%);
+  z-index:2; box-shadow:0 4px 16px rgba(255,107,0,0.5);
+}
+
+.teacher-info { padding-top:8px; }
 .teacher-name {
-  font-family:'Oswald',sans-serif; font-size:32px; font-weight:700;
-  text-transform:uppercase; color:var(--text); margin-bottom:4px; line-height:1.1;
+  font-family:'Oswald',sans-serif; font-size:clamp(28px,3vw,42px); font-weight:700;
+  text-transform:uppercase; color:var(--text); margin-bottom:6px; line-height:1;
+  letter-spacing:-1px;
 }
 .teacher-title {
-  font-size:13px; letter-spacing:3px; text-transform:uppercase;
-  color:var(--orange); margin-bottom:20px; font-weight:600;
+  font-size:11px; letter-spacing:4px; text-transform:uppercase;
+  color:var(--orange); margin-bottom:24px; font-weight:600;
+  display:flex; align-items:center; gap:10px;
 }
-.teacher-divider {
-  width:50px; height:2px;
-  background:linear-gradient(90deg,var(--orange),transparent);
-  margin-bottom:20px; border-radius:2px;
-}
+.teacher-title::after { content:''; flex:1; height:1px; background:rgba(255,107,0,0.2); }
+.teacher-divider { display:none; }
 .teacher-bio {
-  font-size:15px; color:var(--text-muted); line-height:1.75;
-  margin-bottom:28px;
+  font-size:15px; color:var(--text-muted); line-height:1.8;
+  margin-bottom:32px; max-width:520px;
 }
-.teacher-tags {
-  display:flex; flex-wrap:wrap; gap:8px;
-}
+.teacher-tags { display:flex; flex-wrap:wrap; gap:8px; }
 .teacher-tag {
-  background:rgba(255,107,0,0.08); border:1px solid rgba(255,107,0,0.25);
-  color:var(--orange); font-family:'Oswald',sans-serif;
-  font-size:12px; letter-spacing:1px; text-transform:uppercase;
-  padding:5px 12px; border-radius:4px;
+  background:transparent;
+  border:1px solid rgba(255,107,0,0.2);
+  color:var(--text-muted); font-family:'Oswald',sans-serif;
+  font-size:11px; letter-spacing:1.5px; text-transform:uppercase;
+  padding:6px 14px; border-radius:2px;
+  transition:all 0.25s;
 }
+.teacher-tag:hover { border-color:var(--orange); color:var(--orange); background:rgba(255,107,0,0.05); }
 @media (max-width:768px) {
   .teacher-section { padding:60px 22px; }
-  .teacher-card { grid-template-columns:1fr; gap:28px; padding:28px 22px; }
-  .teacher-photo { max-width:180px; margin:0 auto; }
+  .teacher-card { grid-template-columns:1fr; gap:28px; }
+  .teacher-photo { max-width:220px; margin:0 auto; aspect-ratio:1; }
+  .teacher-section::before { display:none; }
 }
 /* ===== SHARED SECTION STYLES ===== */
 .section-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--orange); margin-bottom:14px; }
@@ -471,47 +583,125 @@ nav a:hover { color:var(--orange); }
 .video-wrapper:hover .play-btn { transform:scale(1.1); }
 
 /* GROUPS */
-.groups-section { padding:90px 60px; background:var(--bg-alt); }
-.groups-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:40px; }
+.groups-section { padding:100px 60px; background:var(--bg-alt); position:relative; overflow:hidden; }
+.groups-section::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,107,0,0.04) 0%, transparent 60%);
+  pointer-events:none;
+}
+.groups-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:28px; }
+.card-desc {
+  font-size:13px; color:var(--text-muted); line-height:1.6;
+  margin-bottom:14px; margin-top:-8px; font-style:italic;
+}
+.price-block { margin-top:18px; border-top:1px solid var(--border); padding-top:14px; }
+.price-per { font-size:11px; color:var(--text-faint); margin-top:4px; letter-spacing:0.5px; }
+.price-discount {
+  display:inline-block; margin-top:6px;
+  font-family:'Oswald',sans-serif; font-size:12px; font-weight:700;
+  color:var(--orange); letter-spacing:0.5px;
+  background:rgba(255,107,0,0.08); padding:3px 10px; border-radius:3px;
+}
 .group-card {
-  background:var(--surface); border:1px solid var(--border); border-radius:8px;
-  padding:28px 24px; transition:all 0.3s; position:relative; overflow:hidden; box-shadow:var(--card-shadow);
+  background:var(--surface); border:1px solid var(--border); border-radius:6px;
+  padding:32px 26px; transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
+  position:relative; overflow:hidden; box-shadow:var(--card-shadow);
+  transform-style:preserve-3d;
 }
-.group-card.featured { border-color:rgba(255,107,0,0.35); }
+/* Gradient border on hover via pseudo */
 .group-card::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:3px;
-  background:var(--orange); transform:scaleX(0); transition:transform 0.3s;
+  content:''; position:absolute; inset:0; border-radius:6px;
+  background:linear-gradient(135deg,var(--orange),var(--red));
+  opacity:0; transition:opacity 0.3s; z-index:0;
 }
-.group-card:hover::before { transform:scaleX(1); }
-.group-card:hover { border-color:rgba(255,107,0,0.3); transform:translateY(-4px); box-shadow:0 20px 50px rgba(0,0,0,0.12); }
-.group-num { font-family:'Oswald',sans-serif; font-size:50px; font-weight:700; color:rgba(255,107,0,0.12); line-height:1; margin-bottom:12px; }
-.group-card h3 { font-family:'Oswald',sans-serif; font-size:18px; text-transform:uppercase; margin-bottom:12px; color:var(--text); }
+.group-card::after {
+  content:''; position:absolute; inset:2px; border-radius:4px;
+  background:var(--surface); z-index:0; transition:background 0.3s;
+}
+.group-card > * { position:relative; z-index:1; }
+.group-card:hover { transform:translateY(-8px) rotateX(2deg); box-shadow:0 28px 60px rgba(0,0,0,0.15); }
+.group-card:hover::before { opacity:1; }
+.group-card.featured::before { opacity:0.6; }
+.group-card.featured::after { background:var(--surface); }
+
+/* Popular badge */
+.group-card-popular {
+  position:absolute; top:-1px; right:20px; z-index:2;
+  background:linear-gradient(135deg,var(--orange),var(--red));
+  color:#fff; font-family:'Oswald',sans-serif;
+  font-size:9px; letter-spacing:2px; text-transform:uppercase;
+  padding:5px 14px; border-radius:0 0 6px 6px;
+  box-shadow:0 4px 16px rgba(255,107,0,0.4);
+}
+
+.group-num {
+  font-family:'Oswald',sans-serif; font-size:64px; font-weight:700; line-height:1; margin-bottom:14px;
+  color: transparent;
+  background: linear-gradient(135deg, var(--orange) 0%, #ffb347 60%, var(--orange-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 8px rgba(255,107,0,0.45));
+  opacity: 0.92;
+}
+.group-card h3 {
+  font-family:'Oswald',sans-serif; font-size:18px; text-transform:uppercase;
+  margin-bottom:14px; color:var(--text); letter-spacing:0.5px;
+}
 .group-card ul { list-style:none; font-size:13px; color:var(--text-muted); }
-.group-card ul li { padding:5px 0; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+.group-card ul li {
+  padding:6px 0; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:8px;
+}
+.group-card ul li:last-child { border-bottom:none; }
 .group-card ul li::before { content:'♪'; color:var(--orange); font-size:11px; flex-shrink:0; }
-.price-tag { margin-top:16px; font-family:'Oswald',sans-serif; font-size:24px; color:var(--orange); }
+.price-tag { margin-top:18px; font-family:'Oswald',sans-serif; font-size:26px; color:var(--orange); }
 .price-tag span { font-size:13px; color:var(--text-faint); font-family:'Raleway',sans-serif; font-weight:400; }
-.price-old { display:inline-block; font-family:'Oswald',sans-serif; font-size:16px; color:var(--text-faint); text-decoration:line-through; text-decoration-color:#e53935; text-decoration-thickness:2px; margin-top:12px; margin-bottom:2px; }
-.price-new { display:block; font-family:'Oswald',sans-serif; font-size:26px; color:var(--orange); }
+.price-old {
+  display:inline-block; font-family:'Oswald',sans-serif; font-size:16px;
+  color:var(--text-faint); text-decoration:line-through;
+  text-decoration-color:#e53935; text-decoration-thickness:2px;
+  margin-top:14px; margin-bottom:2px;
+}
+.price-new { display:block; font-family:'Oswald',sans-serif; font-size:28px; color:var(--orange); }
 .price-new span { font-size:13px; color:var(--text-faint); font-family:'Raleway',sans-serif; font-weight:400; }
 
 /* TESTIMONIALS */
-.testimonials { padding:90px 60px; background:var(--bg); }
-.testimonials-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:40px; }
+.testimonials { padding:100px 60px; background:var(--bg); position:relative; }
+.testimonials-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px; }
 .testimonial-card {
-  background:var(--surface); border-radius:8px; padding:26px;
-  border:1px solid var(--border); box-shadow:var(--card-shadow); transition:background 0.4s;
+  background:var(--surface); border-radius:6px; padding:30px;
+  border:1px solid var(--border); box-shadow:var(--card-shadow);
+  transition:all 0.35s cubic-bezier(0.23,1,0.32,1);
+  position:relative; overflow:hidden;
 }
+.testimonial-card::before {
+  content:'\201C'; position:absolute; top:-10px; right:16px;
+  font-family:'Georgia',serif; font-size:120px; line-height:1;
+  color:rgba(255,107,0,0.06); pointer-events:none;
+  font-weight:700;
+}
+.testimonial-card:hover { transform:translateY(-6px); box-shadow:0 24px 50px rgba(0,0,0,0.12); border-color:rgba(255,107,0,0.2); }
+
 .testimonial-avatar {
-  width:44px; height:44px; border-radius:50%;
+  width:48px; height:48px; border-radius:50%;
   background:linear-gradient(135deg,var(--orange),var(--red));
   display:flex; align-items:center; justify-content:center;
-  font-family:'Oswald',sans-serif; font-size:18px; font-weight:700; color:#fff; margin-bottom:12px;
+  font-family:'Oswald',sans-serif; font-size:20px; font-weight:700;
+  color:#fff; margin-bottom:16px;
+  box-shadow:0 4px 16px rgba(255,107,0,0.35);
+  flex-shrink:0;
 }
-.testimonial-card blockquote { font-size:13px; color:var(--text-muted); line-height:1.7; margin-bottom:12px; font-style:italic; }
-.testimonial-name { font-weight:600; font-size:14px; color:var(--text); }
-.testimonial-role { font-size:12px; color:var(--text-faint); }
-.stars { color:var(--orange); font-size:13px; margin-bottom:8px; }
+.testimonial-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.testimonial-meta { flex:1; }
+.testimonial-card blockquote {
+  font-size:14px; color:var(--text-muted); line-height:1.75;
+  margin-bottom:0; font-style:italic;
+  border-left:2px solid rgba(255,107,0,0.25); padding-left:14px;
+}
+.testimonial-name { font-weight:700; font-size:14px; color:var(--text); line-height:1.2; }
+.testimonial-role { font-size:11px; color:var(--text-faint); letter-spacing:0.5px; margin-top:2px; }
+.stars { color:var(--orange); font-size:12px; margin-bottom:0; letter-spacing:2px; }
 
 /* SIGNUP */
 .signup-section { padding:90px 60px; text-align:center; position:relative; overflow:hidden; background:var(--bg-alt); }
@@ -642,22 +832,25 @@ footer p { font-size:12px; color:var(--text-faint); }
     height: 20px;
     margin-left: 0 !important;
     margin-top: -10px;
+    transform: translateY(-50%);
     flex-direction: row;
   }
   .gstr-line {
     height: var(--sw) !important;
     width: 100% !important;
   }
-  .hero h1      { font-size: clamp(34px,8vw,52px); }
-  .hero-highlight { font-size: 20px; }
+  .hero h1      { font-size: clamp(34px,8vw,52px); letter-spacing:-0.5px; }
+  .hero-highlight { font-size: 17px; }
   .hero-sub     { font-size: 15px; }
-  .hero-stats   { gap: 20px; }
-  .stat-num     { font-size: 26px; }
+  /* hero-stats becomes scrollable pills on mobile */
+  .hero-stats   { max-width:100%; overflow-x:auto; }
+  .stat-item    { min-width:80px; }
+  .stat-num     { font-size: 24px; }
 
   .path-section, .video-section, .groups-section,
   .testimonials, .signup-section, .contacts { padding:60px 22px; }
   .path-grid { grid-template-columns:1fr; }
-  .groups-grid { grid-template-columns:1fr 1fr; }
+  .groups-grid { grid-template-columns:1fr 1fr; gap:16px; }
   .testimonials-grid { grid-template-columns:1fr 1fr; }
   .contacts-grid { grid-template-columns:1fr; gap:32px; }
   footer { padding:20px 22px; flex-direction:column; text-align:center; gap:12px; }
@@ -795,6 +988,7 @@ footer p { font-size:12px; color:var(--text-faint); }
   <h2 class="section-title" data-uz="Sizning ustozingiz" data-ru="Ваш преподаватель">Sizning ustozingiz</h2>
   <div class="teacher-card">
     <div class="teacher-photo">
+      <div class="teacher-photo-badge" data-uz="15+ yil" data-ru="15+ лет">15+ yil</div>
       <div class="teacher-photo-icon">🎸</div>
       <div class="teacher-photo-name">Sarvar Azimov</div>
     </div>
@@ -878,142 +1072,91 @@ footer p { font-size:12px; color:var(--text-faint); }
 
 <!-- GROUPS -->
 <section class="groups-section" id="groups">
-  <div class="section-label" data-uz="Dars formatlari" data-ru="Форматы занятий">Dars formatlari</div>
-  <h2 class="section-title" data-uz="Oylik abonementlar" data-ru="Абонементы">Oylik abonementlar</h2>
+  <div class="section-label" data-uz="Dars formatlari"          data-ru="Форматы занятий">Dars formatlari</div>
+  <h2 class="section-title" data-uz="Oylik obunalar" data-ru="Месячные абонементы">Oylik obunalar</h2>
+  <!-- Individual badge shown on ALL cards -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;margin-top:-8px;">
+    <span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.35);color:var(--orange);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:2px;">
+      <span style="font-size:14px;">👤</span>
+      <span data-uz="Barcha abonementlar — INDIVIDUAL darslar" data-ru="Все абонементы — ИНДИВИДУАЛЬНЫЕ занятия">Barcha abonementlar — INDIVIDUAL darslar</span>
+    </span>
+  </div>
   <div class="groups-grid">
 
-    <!-- TEZKOR KURS -->
-    <div class="group-card featured" style="border-color:rgba(255,107,0,0.5)">
-      <div class="group-num" style="color:rgba(255,107,0,0.2)">10</div>
-      <h3 data-uz="10 darslik tezkor kurs" data-ru="Экспресс-курс 10 уроков">10 darslik tezkor kurs<br>
-        <small style="font-size:12px;color:var(--text-faint);font-weight:400;text-transform:none"
-          data-uz="10 dars davomida sevimli qo'shig'ingizni ijro eting"
-          data-ru="За 10 уроков сыграйте любимую песню на гитаре"
-        >10 dars davomida sevimli qo'shig'ingizni ijro eting</small>
-      </h3>
+    <!-- CARD 1: TEZKOR KURS -->
+    <div class="group-card">
+      <div class="group-num">10</div>
+      <h3 data-uz="TEZKOR KURS" data-ru="ЭКСПРЕСС-КУРС">TEZKOR KURS</h3>
+      <p class="card-desc" data-uz="Tez natija kerakmi? 10 ta intensiv dars — asoslarni o'rganib, birinchi qo'shiqni chalib ketasiz." data-ru="Нужен быстрый результат? 10 интенсивных уроков — освоите основы и сыграете первую песню.">Tez natija kerakmi? 10 ta intensiv dars — asoslarni o'rganib, birinchi qo'shiqni chalib ketasiz.</p>
       <ul>
-        <li data-uz="🎸 Gitara asoslarini o'rganasiz"                         data-ru="🎸 Освоите основы игры на гитаре">🎸 Gitara asoslarini o'rganasiz</li>
-        <li data-uz="🎸 Asosiy akkordlarni chalishni o'zlashtirasiz"           data-ru="🎸 Научитесь играть основные аккорды">🎸 Asosiy akkordlarni chalishni o'zlashtirasiz</li>
-        <li data-uz="🎸 Ritm va qo'shiqni kuzatib chalishni o'rganasiz"        data-ru="🎸 Освоите ритм и аккомпанемент">🎸 Ritm va qo'shiqni kuzatib chalishni o'rganasiz</li>
-        <li data-uz="🎸 O'zingiz yoqtirgan qo'shiqni ijro etishga tayyor bo'lasiz" data-ru="🎸 Будете готовы сыграть любимую песню">🎸 O'zingiz yoqtirgan qo'shiqni ijro etishga tayyor bo'lasiz</li>
+        <li data-uz=" Individual dars (1 o'quvchi)" data-ru=" Индивидуально (1 ученик)"> Individual dars (1 o'quvchi)</li>
+        <li data-uz=" 60 daqiqa / dars" data-ru=" 60 минут / урок"> 60 daqiqa / dars</li>
+        <li data-uz=" 10 ta dars (jadval sizga qulay)" data-ru=" 10 уроков (удобное расписание)"> 10 ta dars (jadval sizga qulay)</li>
+        <li data-uz=" Akkordlar, ritm, birinchi qo'shiq" data-ru=" Аккорды, ритм, первая песня"> Akkordlar, ritm, birinchi qo'shiq</li>
+        <li data-uz=" Shaxsiy dars reja" data-ru=" Личный план занятий"> Shaxsiy dars reja</li>
       </ul>
-      <div style="font-size:12px;color:var(--orange);margin-top:8px;font-weight:700"
-        data-uz="⭐ Kurs yakunida siz gitara bilan sevimli qo'shig'ingizni mustaqil ijro qila olasiz"
-        data-ru="⭐ По окончании курса вы сможете самостоятельно сыграть любимую песню"
-      >⭐ Kurs yakunida siz gitara bilan sevimli qo'shig'ingizni mustaqil ijro qila olasiz</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:8px"
-        data-uz="🕐 Dars davomiyligi: 60 minut &nbsp;|&nbsp; Jami darslar soni: 10 ta"
-        data-ru="🕐 Длительность урока: 60 мин &nbsp;|&nbsp; Всего уроков: 10"
-      >🕐 Dars davomiyligi: 60 minut &nbsp;|&nbsp; Jami darslar soni: 10 ta</div>
-      <div class="price-new" style="margin-top:12px">1 500 000 <span data-uz="so'm" data-ru="сум">so'm</span></div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:6px"
-        data-uz="☎ Hoziroq ro'yxatdan o'ting va gitara chalishni boshlang"
-        data-ru="☎ Запишитесь прямо сейчас и начните играть на гитаре"
-      >☎ Hoziroq ro'yxatdan o'ting va gitara chalishni boshlang</div>
+      <div class="price-block">
+        <div class="price-new">1 500 000 <span data-uz="so'm" data-ru="сум">so'm</span></div>
+        <div class="price-per" data-uz="150 000 so'm / dars" data-ru="150 000 сум / урок">150 000 so'm / dars</div>
+      </div>
     </div>
 
-    <!-- 1 OYLIK -->
+    <!-- CARD 2: 1 OYLIK -->
     <div class="group-card">
       <div class="group-num">1</div>
-      <h3 data-uz="1 Oylik Abonement" data-ru="Абонемент на 1 месяц">1 Oylik Abonement<br>
-        <small style="font-size:12px;color:var(--text-faint);font-weight:400;text-transform:none"
-          data-uz="Boshlash uchun eng qulay variant"
-          data-ru="Идеальный вариант для начала"
-        >Boshlash uchun eng qulay variant</small>
-      </h3>
-      <p style="font-size:11px;color:var(--orange);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-weight:700"
-        data-uz="Kimlar uchun:" data-ru="Для кого:">Kimlar uchun:</p>
+      <h3 data-uz="1 OYLIK" data-ru="1 МЕСЯЦ">1 OYLIK</h3>
+      <p class="card-desc" data-uz="Sinab ko'rish uchun ideal. Bir oy ichida real progress ko'rasiz va o'qishni davom ettirasiz." data-ru="Идеально для старта. За месяц увидите реальный прогресс и захотите продолжить.">Sinab ko'rish uchun ideal. Bir oy ichida real progress ko'rasiz.</p>
       <ul>
-        <li data-uz="Gitara chalishni sinab ko'rmoqchi bo'lganlar"        data-ru="Тех, кто хочет попробовать игру на гитаре">Gitara chalishni sinab ko'rmoqchi bo'lganlar</li>
-        <li data-uz="Boshlovchilar"                                        data-ru="Начинающих">Boshlovchilar</li>
-        <li data-uz="Qisqa muddatda asoslarni o'rganmoqchi bo'lganlar"    data-ru="Тех, кто хочет освоить основы за короткий срок">Qisqa muddatda asoslarni o'rganmoqchi bo'lganlar</li>
+        <li data-uz=" Individual dars (1 o'quvchi)" data-ru=" Индивидуально (1 ученик)"> Individual dars (1 o'quvchi)</li>
+        <li data-uz=" 45 daqiqa / dars" data-ru=" 45 минут / урок"> 45 daqiqa / dars</li>
+        <li data-uz=" 8 dars / oy (haftada 2x)" data-ru=" 8 уроков / мес (2 раза в нед.)"> 8 dars / oy (haftada 2x)</li>
+        <li data-uz=" Asosiy texnika, akkordlar" data-ru=" Базовая техника, аккорды"> Asosiy texnika, akkordlar</li>
+        <li data-uz=" Uy vazifasi va nazorat" data-ru=" Домашние задания и контроль"> Uy vazifasi va nazorat</li>
       </ul>
-      <p style="font-size:11px;color:var(--orange);letter-spacing:1px;text-transform:uppercase;margin:10px 0 8px;font-weight:700"
-        data-uz="Afzalliklari:" data-ru="Преимущества:">Afzalliklari:</p>
-      <ul>
-        <li data-uz="Gitara asoslari bilan tanishish"          data-ru="Знакомство с основами гитары">Gitara asoslari bilan tanishish</li>
-        <li data-uz="Birinchi akkordlar va oddiy qo'shiqlar"   data-ru="Первые аккорды и простые песни">Birinchi akkordlar va oddiy qo'shiqlar</li>
-        <li data-uz="Individual yondashuv"                     data-ru="Индивидуальный подход">Individual yondashuv</li>
-        <li data-uz="Moslashuvchan dars jadvali"               data-ru="Гибкое расписание">Moslashuvchan dars jadvali</li>
-      </ul>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:10px;line-height:1.8">
-        <div data-uz="📚 Jami darslar soni: 8 ta"            data-ru="📚 Количество уроков: 8">📚 Jami darslar soni: 8 ta</div>
-        <div data-uz="🕐 Dars davomiyligi: 45 daqiqa"        data-ru="🕐 Длительность урока: 45 минут">🕐 Dars davomiyligi: 45 daqiqa</div>
-        <div data-uz="👤 Dars jarayoni: Yakka tartibda (individual)" data-ru="👤 Формат: Индивидуальные занятия">👤 Dars jarayoni: Yakka tartibda (individual)</div>
+      <div class="price-block">
+        <div class="price-new">800 000 <span data-uz="so'm / oy" data-ru="сум / мес">so'm / oy</span></div>
+        <div class="price-per" data-uz="100 000 so'm / dars" data-ru="100 000 сум / урок">100 000 so'm / dars</div>
       </div>
-      <div class="price-new" style="margin-top:12px">800 000 <span data-uz="so'm" data-ru="сум">so'm</span></div>
     </div>
 
-    <!-- 3 OYLIK -->
+    <!-- CARD 3: 3 OYLIK — FEATURED -->
     <div class="group-card featured">
-      <div class="group-num" style="color:rgba(255,107,0,0.2)">3</div>
-      <h3 data-uz="3 Oylik Abonement" data-ru="Абонемент на 3 месяца">3 Oylik Abonement<br>
-        <small style="font-size:12px;color:var(--text-faint);font-weight:400;text-transform:none"
-          data-uz="Natija beradigan optimal kurs"
-          data-ru="Оптимальный курс, дающий результат"
-        >Natija beradigan optimal kurs</small>
-      </h3>
-      <p style="font-size:11px;color:var(--orange);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-weight:700"
-        data-uz="Kimlar uchun:" data-ru="Для кого:">Kimlar uchun:</p>
+      <div class="group-card-popular" data-uz="⭐ Eng mashhur" data-ru="⭐ Популярный">⭐ Eng mashhur</div>
+      <div class="group-num">3</div>
+      <h3 data-uz="3 OYLIK" data-ru="3 МЕСЯЦА">3 OYLIK</h3>
+      <p class="card-desc" data-uz="Eng ko'p tanlangan variant. Qo'shiqlarni o'zingiz chalay boshlaysiz va texnikangiz mustahkamlanadi." data-ru="Самый популярный. Начнёте самостоятельно играть песни, техника станет уверенной.">Eng ko'p tanlangan variant. Qo'shiqlarni o'zingiz chalay boshlaysiz.</p>
       <ul>
-        <li data-uz="Gitara chalishni jiddiy o'rganmoqchi bo'lganlar"              data-ru="Тех, кто серьёзно хочет научиться играть">Gitara chalishni jiddiy o'rganmoqchi bo'lganlar</li>
-        <li data-uz="Bir nechta qo'shiqlarni mustaqil ijro etishni xohlaganlar"    data-ru="Тех, кто хочет самостоятельно исполнять несколько песен">Bir nechta qo'shiqlarni mustaqil ijro etishni xohlaganlar</li>
+        <li data-uz=" Individual dars (1 o'quvchi)" data-ru=" Индивидуально (1 ученик)"> Individual dars (1 o'quvchi)</li>
+        <li data-uz=" 45 daqiqa / dars" data-ru=" 45 минут / урок"> 45 daqiqa / dars</li>
+        <li data-uz=" 24 dars / 3 oy (haftada 2x)" data-ru=" 24 урока / 3 мес (2 раза в нед.)"> 24 dars / 3 oy (haftada 2x)</li>
+        <li data-uz=" Repertuar, solo, improvizatsiya" data-ru=" Репертуар, соло, импровизация"> Repertuar, solo, improvizatsiya</li>
+        <li data-uz="🎁 Bepul mediatrlar to'plami" data-ru="🎁 Бесплатный набор медиаторов">🎁 Bepul mediatrlar to'plami</li>
       </ul>
-      <p style="font-size:11px;color:var(--orange);letter-spacing:1px;text-transform:uppercase;margin:10px 0 8px;font-weight:700"
-        data-uz="Afzalliklari:" data-ru="Преимущества:">Afzalliklari:</p>
-      <ul>
-        <li data-uz="Texnikani to'liq shakllantirish"                data-ru="Полное формирование техники">Texnikani to'liq shakllantirish</li>
-        <li data-uz="Akkordlar va ritmni yaxshi o'zlashtirish"       data-ru="Хорошее освоение аккордов и ритма">Akkordlar va ritmni yaxshi o'zlashtirish</li>
-        <li data-uz="Bir nechta mashhur qo'shiqlarni chalish"        data-ru="Исполнение нескольких популярных песен">Bir nechta mashhur qo'shiqlarni chalish</li>
-        <li data-uz="Sahna ijrosi uchun tayyorgarlik"                data-ru="Подготовка к сценическому выступлению">Sahna ijrosi uchun tayyorgarlik</li>
-      </ul>
-      <div style="font-size:12px;color:var(--orange);margin-top:8px;font-weight:700"
-        data-uz="⭐ Eng ko'p tanlanadigan kurs"
-        data-ru="⭐ Самый популярный курс"
-      >⭐ Eng ko'p tanlanadigan kurs</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:10px;line-height:1.8">
-        <div data-uz="📚 Jami darslar soni: 24 ta"           data-ru="📚 Количество уроков: 24">📚 Jami darslar soni: 24 ta</div>
-        <div data-uz="🕐 Dars davomiyligi: 45 daqiqa"        data-ru="🕐 Длительность урока: 45 минут">🕐 Dars davomiyligi: 45 daqiqa</div>
-        <div data-uz="👤 Dars jarayoni: Yakka tartibda (individual)" data-ru="👤 Формат: Индивидуальные занятия">👤 Dars jarayoni: Yakka tartibda (individual)</div>
+      <div class="price-block">
+        <div class="price-old">2 040 000 so'm</div>
+        <div class="price-new">1 800 000 <span data-uz="so'm / 3 oy" data-ru="сум / 3 мес">so'm / 3 oy</span></div>
+        <div class="price-discount" data-uz="🔥 240 000 so'm tejaysiz!" data-ru="🔥 Экономите 240 000 сум!">🔥 240 000 so'm tejaysiz!</div>
       </div>
-      <div class="price-old">2 040 000 so'm</div>
-      <div class="price-new">360 000 <span data-uz="so'm" data-ru="сум">so'm</span></div>
     </div>
 
-    <!-- 6 OYLIK -->
+    <!-- CARD 4: 6 OYLIK -->
     <div class="group-card">
+      <div class="group-card-popular" style="background:linear-gradient(135deg,#1a6b3a,#2e9e57);" data-uz="💎 Eng foydali" data-ru="💎 Лучшая цена">💎 Eng foydali</div>
       <div class="group-num">6</div>
-      <h3 data-uz="6 Oylik Abonement" data-ru="Абонемент на 6 месяцев">6 Oylik Abonement<br>
-        <small style="font-size:12px;color:var(--text-faint);font-weight:400;text-transform:none"
-          data-uz="Professional darajaga chiqish uchun"
-          data-ru="Для выхода на профессиональный уровень"
-        >Professional darajaga chiqish uchun</small>
-      </h3>
-      <p style="font-size:11px;color:var(--orange);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-weight:700"
-        data-uz="Kimlar uchun:" data-ru="Для кого:">Kimlar uchun:</p>
+      <h3 data-uz="6 OYLIK" data-ru="6 МЕСЯЦЕВ">6 OYLIK</h3>
+      <p class="card-desc" data-uz="Jiddiy natija uchun. Yarim yil ichida professional darajaga chiqasiz va mustaqil ijro etasiz." data-ru="Для серьёзного результата. За полгода выйдете на профессиональный уровень.">Jiddiy natija uchun. Yarim yil ichida professional darajaga chiqasiz.</p>
       <ul>
-        <li data-uz="Gitara chalishni mukammal o'rganmoqchi bo'lganlar"       data-ru="Тех, кто хочет идеально освоить гитару">Gitara chalishni mukammal o'rganmoqchi bo'lganlar</li>
-        <li data-uz="Sahna yoki ijodiy faoliyatni boshlamoqchi bo'lganlar"    data-ru="Тех, кто хочет начать сценическую или творческую деятельность">Sahna yoki ijodiy faoliyatni boshlamoqchi bo'lganlar</li>
+        <li data-uz=" Individual dars (1 o'quvchi)" data-ru=" Индивидуально (1 ученик)"> Individual dars (1 o'quvchi)</li>
+        <li data-uz=" 45 daqiqa / dars" data-ru=" 45 минут / урок"> 45 daqiqa / dars</li>
+        <li data-uz=" 48 dars / 6 oy (haftada 2x)" data-ru=" 48 уроков / 6 мес (2 раза в нед.)"> 48 dars / 6 oy (haftada 2x)</li>
+        <li data-uz=" Professional texnika va sahna" data-ru=" Профессиональная техника и сцена"> Professional texnika va sahna</li>
+        <li data-uz="🎁 Bepul gitara stroplari + mediator" data-ru="🎁 Бесплатный ремень + медиаторы">🎁 Bepul gitara stroplari + mediator</li>
       </ul>
-      <p style="font-size:11px;color:var(--orange);letter-spacing:1px;text-transform:uppercase;margin:10px 0 8px;font-weight:700"
-        data-uz="Afzalliklari:" data-ru="Преимущества:">Afzalliklari:</p>
-      <ul>
-        <li data-uz="Keng repertuar"                               data-ru="Широкий репертуар">Keng repertuar</li>
-        <li data-uz="Murakkab texnikalarni o'rganish"              data-ru="Изучение сложных техник">Murakkab texnikalarni o'rganish</li>
-        <li data-uz="Improvizatsiya asoslari"                      data-ru="Основы импровизации">Improvizatsiya asoslari</li>
-        <li data-uz="Sahna chiqishlari va konsertlarda ishtirok"   data-ru="Участие в выступлениях и концертах">Sahna chiqishlari va konsertlarda ishtirok</li>
-      </ul>
-      <div style="font-size:12px;color:var(--orange);margin-top:8px;font-weight:700"
-        data-uz="🔥 Eng foydali abonement (ko'proq natija + iqtisodiy jihatdan ham qulay)"
-        data-ru="🔥 Самый выгодный абонемент (больше результата + экономия)"
-      >🔥 Eng foydali abonement (ko'proq natija + iqtisodiy jihatdan ham qulay)</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:10px;line-height:1.8">
-        <div data-uz="📚 Jami darslar soni: 48 ta"           data-ru="📚 Количество уроков: 48">📚 Jami darslar soni: 48 ta</div>
-        <div data-uz="🕐 Dars davomiyligi: 45 daqiqa"        data-ru="🕐 Длительность урока: 45 минут">🕐 Dars davomiyligi: 45 daqiqa</div>
-        <div data-uz="👤 Dars jarayoni: Yakka tartibda (individual)" data-ru="👤 Формат: Индивидуальные занятия">👤 Dars jarayoni: Yakka tartibda (individual)</div>
+      <div class="price-block">
+        <div class="price-old">3 360 000 so'm</div>
+        <div class="price-new">2 880 000 <span data-uz="so'm / 6 oy" data-ru="сум / 6 мес">so'm / 6 oy</span></div>
+        <div class="price-discount" style="color:#2ecc71;" data-uz="🔥 480 000 so'm tejaysiz!" data-ru="🔥 Экономите 480 000 сум!">🔥 480 000 so'm tejaysiz!</div>
       </div>
-      <div class="price-old">3 360 000 so'm</div>
-      <div class="price-new">1 440 000 <span data-uz="so'm" data-ru="сум">so'm</span></div>
     </div>
 
   </div>
@@ -1025,25 +1168,37 @@ footer p { font-size:12px; color:var(--text-faint); }
   <h2 class="section-title" data-uz="Allaqachon o'rgandilar" data-ru="Уже научились играть">Allaqachon o'rgandilar</h2>
   <div class="testimonials-grid">
     <div class="testimonial-card">
-      <div class="testimonial-avatar">A</div>
-      <div class="stars">★★★★★</div>
+      <div class="testimonial-header">
+        <div class="testimonial-avatar">X</div>
+        <div class="testimonial-meta">
+          <div class="testimonial-name">Xilola</div>
+          <div class="testimonial-role" data-uz="O'quvchi, 3 oy" data-ru="Ученица, 3 месяца">O'quvchi, 3 oy</div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
       <blockquote data-uz="«Maktabga hech qanday tajribasiz keldim. Bir oydan keyin birinchi qo'shiqni chaldim. O'qituvchi juda sabr-toqatli tushuntiradi.»" data-ru="«Пришла в школу без опыта. Уже через месяц играла первую песню. Преподаватель объясняет терпеливо и понятно.»">«Maktabga hech qanday tajribasiz keldim. Bir oydan keyin birinchi qo'shiqni chaldim. O'qituvchi juda sabr-toqatli tushuntiradi.»</blockquote>
-      <div class="testimonial-name">Xilola</div>
-      <div class="testimonial-role" data-uz="O'quvchi, 3 oy" data-ru="Ученица, 3 месяца">O'quvchi, 3 oy</div>
     </div>
     <div class="testimonial-card">
-      <div class="testimonial-avatar">D</div>
-      <div class="stars">★★★★★</div>
+      <div class="testimonial-header">
+        <div class="testimonial-avatar">X</div>
+        <div class="testimonial-meta">
+          <div class="testimonial-name">Xalimaxon</div>
+          <div class="testimonial-role" data-uz="O'quvchi ota-onasi" data-ru="Родитель ученика">O'quvchi ota-onasi</div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
       <blockquote data-uz="«O'g'lim bu yerga yarim yildan beri boradi. Rivojlanish ulkan! Endi maktab konsertlarida chiqmoqchi. Rahmat Royal!»" data-ru="«Сын ходит сюда полгода. Прогресс колоссальный! Хочет выступать на концертах. Спасибо Royal!»">«O'g'lim bu yerga yarim yildan beri boradi. Rivojlanish ulkan! Endi maktab konsertlarida chiqmoqchi. Rahmat Royal!»</blockquote>
-      <div class="testimonial-name">Xalimaxon</div>
-      <div class="testimonial-role" data-uz="O'quvchi ota-onasi" data-ru="Родитель ученика">O'quvchi ota-onasi</div>
     </div>
     <div class="testimonial-card">
-      <div class="testimonial-avatar">S</div>
-      <div class="stars">★★★★★</div>
+      <div class="testimonial-header">
+        <div class="testimonial-avatar">S</div>
+        <div class="testimonial-meta">
+          <div class="testimonial-name">Sevinch</div>
+          <div class="testimonial-role" data-uz="O'quvchi, 2 oy" data-ru="Ученик, 2 месяца">O'quvchi, 2 oy</div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
       <blockquote data-uz="«Ishdan keyin kattalar guruhida mashg'ulot olaman. Muhit ajoyib, bosim yo'q. Darslarga kelish haqiqiy zavq!»" data-ru="«Занимаюсь во взрослой группе после работы. Атмосфера супер, никакого давления. Кайф приходить!»">«Ishdan keyin kattalar guruhida mashg'ulot olaman. Muhit ajoyib, bosim yo'q. Darslarga kelish haqiqiy zavq!»</blockquote>
-      <div class="testimonial-name">Sevinch</div>
-      <div class="testimonial-role" data-uz="O'quvchi, 2 oy" data-ru="Ученик, 2 месяца">O'quvchi, 2 oy</div>
     </div>
   </div>
 </section>
@@ -1098,9 +1253,9 @@ footer p { font-size:12px; color:var(--text-faint); }
         </div>
       </div>
     </div>
-      <div class="map-placeholder">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d756.2!2d72.3539551!3d40.7563355!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bced1fa9b532a9%3A0xe0d72451b6a59aa2!2sROYAL%20music%20school!5e0!3m2!1sru!2suz!4v1000000000001" allowfullscreen loading="lazy"></iframe>
-      </div>
+    <div class="map-placeholder">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d755.6!2d72.3548076!3d40.7563327!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bced1fa9b532a9%3A0xe0d72451b6a59aa2!2sROYAL%20music%20school!5e0!3m2!1suz!2suz!4v1710000000000" allowfullscreen loading="lazy"></iframe>
+    </div>
   </div>
 </section>
 
@@ -1342,22 +1497,113 @@ document.addEventListener('DOMContentLoaded', function() {
           // show/hide splash logic
 });
 
-/* ===== SCROLL ANIMATION ===== */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
+/* ===== 3D TILT on group & testimonial cards ===== */
+(function(){
+  function addTilt(selector) {
+    document.querySelectorAll(selector).forEach(function(card){
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width  - 0.5;
+        var y = (e.clientY - r.top)  / r.height - 0.5;
+        card.style.transform = 'translateY(-8px) rotateX('+(y*-6)+'deg) rotateY('+(x*6)+'deg)';
+      });
+      card.addEventListener('mouseleave', function(){
+        card.style.transform = '';
+      });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    addTilt('.group-card');
+    addTilt('.testimonial-card');
   });
-}, { threshold: 0.08 });
+})();
 
-document.querySelectorAll('.group-card, .testimonial-card, .path-step').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'opacity 0.55s ease, transform 0.55s ease, background 0.4s, border-color 0.4s, box-shadow 0.3s';
-  observer.observe(el);
-});
+/* ===== HERO counter animation ===== */
+(function(){
+  function animateNum(el, target, suffix) {
+    var start = 0, dur = 1800, startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * target) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var observed = false;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting && !observed) {
+        observed = true;
+        var nums = document.querySelectorAll('.stat-num');
+        if (nums[0]) animateNum(nums[0], 200, '+');
+        if (nums[1]) animateNum(nums[1], 15,  '+');
+        if (nums[2]) animateNum(nums[2], 10,  '');
+      }
+    });
+  }, { threshold: 0.5 });
+  document.addEventListener('DOMContentLoaded', function(){
+    var stats = document.querySelector('.hero-stats');
+    if (stats) io.observe(stats);
+  });
+})();
+
+/* ===== SCROLL ANIMATION — все блоки ===== */
+(function(){
+  var SELECTORS = [
+    '.group-card','.testimonial-card','.path-step',
+    '.teacher-card','.video-wrapper',
+    '.section-label','.section-title',
+    '.hero-stats .stat-item','.hero-btns',
+    '.contact-item','.map-placeholder','.signup-form',
+    '.teacher-tags .teacher-tag','.teacher-photo','.teacher-info',
+    '.footer-logo'
+  ];
+
+  var allEls = [];
+  SELECTORS.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){ allEls.push(el); });
+  });
+
+  var parentMap = {};
+  allEls.forEach(function(el){
+    var key = el.parentNode && el.parentNode.className ? el.parentNode.className : 'root';
+    if (!parentMap[key]) parentMap[key] = [];
+    parentMap[key].push(el);
+  });
+  Object.values(parentMap).forEach(function(group){
+    if (group.length > 1) group.forEach(function(el,i){ el.style.transitionDelay = (i*0.07)+'s'; });
+  });
+
+  allEls.forEach(function(el){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(28px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease, background 0.4s, border-color 0.4s, box-shadow 0.3s';
+  });
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.07, rootMargin: '0px 0px -20px 0px' });
+
+  allEls.forEach(function(el){ io.observe(el); });
+
+  // Headings not already handled
+  document.querySelectorAll('.path-section > div > .section-label, .path-section > div > .section-title, .groups-section > .section-label, .groups-section > .section-title, .testimonials > .section-label, .testimonials > .section-title, .video-section > .section-label, .video-section > .section-title, .signup-section > .section-label, .signup-section > h2, .contacts > .section-label, .contacts > .section-title, .teacher-section > .section-label, .teacher-section > .section-title').forEach(function(el,i){
+    if (el.style.opacity === '0') return;
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(22px)';
+    el.style.transitionDelay = (i%2===0?'0s':'0.1s');
+    el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+    io.observe(el);
+  });
+})();
 </script>
 </body>
 </html>
