@@ -899,6 +899,210 @@ footer p { font-size:12px; color:var(--text-faint); }
   .logo-text { display:none; }
   .logo-img { height:36px; }
 }
+    :root {
+    --orange: #ff6b00;
+    --bg: #1a1a1a;
+    --card-bg: #222222;
+    --card-featured: #252520;
+    --text: #e0d8cc;
+    --text-muted: #888;
+    --green: #2ecc71;
+    --green-dark: #1a6b3a;
+    --border: rgba(255,255,255,0.07);
+  }
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    background: var(--bg);
+    font-family: 'Roboto', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+ 
+  .groups-section { max-width: 1280px; margin: 0 auto; }
+ 
+  .section-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 10px;
+  }
+ 
+  .section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+ 
+  .individual-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,107,0,0.1);
+    border: 1px solid rgba(255,107,0,0.35);
+    color: var(--orange);
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 30px;
+  }
+ 
+  /* Equal-height grid */
+  .groups-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    align-items: stretch;
+  }
+ 
+  @media (max-width: 1100px) { .groups-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px)  { .groups-grid { grid-template-columns: 1fr; } }
+ 
+  /* ---- CARD ---- */
+  .group-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+ 
+  .group-card:hover { border-color: rgba(255,107,0,0.4); box-shadow: 0 4px 30px rgba(255,107,0,0.08); }
+  .group-card.featured { background: var(--card-featured); border-color: rgba(255,107,0,0.55); box-shadow: 0 0 40px rgba(255,107,0,0.13); }
+  .group-card.open { border-color: rgba(255,107,0,0.6); box-shadow: 0 6px 40px rgba(255,107,0,0.16); }
+ 
+  .popular-badge {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #a84400, var(--orange));
+    color: #fff;
+  }
+  .popular-badge.green { background: linear-gradient(135deg, var(--green-dark), #2e9e57); }
+ 
+  /* Summary fills remaining space so btn always at bottom */
+  .card-summary {
+    padding: 28px 24px 20px;
+    flex: 1;
+  }
+ 
+  .group-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--orange);
+    opacity: 0.85;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+ 
+  .group-card h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+ 
+  .card-tagline { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; }
+ 
+  .price-wrap { margin-bottom: 12px; }
+  .price-old-mini { font-size: 13px; color: #e05555; text-decoration: line-through; margin-bottom: 2px; }
+  .price-main { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; color: var(--green); line-height: 1; }
+  .price-unit { font-size: 12px; color: var(--text-muted); margin-left: 4px; }
+ 
+  .key-facts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .fact-chip { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 3px; padding: 4px 10px; font-size: 11px; color: #bbb; white-space: nowrap; }
+ 
+  /* ---- EXPAND BUTTON ---- */
+  .expand-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 11px;
+    background: rgba(255,107,0,0.07);
+    border: none;
+    border-top: 1px solid rgba(255,107,0,0.18);
+    color: var(--orange);
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .expand-btn:hover { background: rgba(255,107,0,0.14); }
+ 
+  .expand-icon { display: inline-block; transition: transform 0.35s ease; font-size: 13px; }
+  .group-card.open .expand-icon { transform: rotate(180deg); }
+ 
+  /* ---- DETAILS ---- */
+  .card-details { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .group-card.open .card-details { max-height: 900px; }
+ 
+  .details-inner { padding: 16px 24px 4px; border-top: 1px solid var(--border); }
+ 
+  .details-section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 8px;
+    margin-top: 14px;
+  }
+  .details-section-title:first-child { margin-top: 0; }
+ 
+  .details-list { list-style: none; padding: 0; margin: 0 0 4px; }
+  .details-list li {
+    font-size: 13px;
+    color: var(--text);
+    padding: 5px 0 5px 20px;
+    position: relative;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .details-list li:last-child { border-bottom: none; }
+  .details-list li::before { content: '♪'; position: absolute; left: 0; color: var(--orange); font-size: 10px; top: 7px; }
+  .details-list li.emoji::before { content: none; }
+  .details-list li.emoji { padding-left: 2px; }
+ 
+  .meta-row { display: flex; flex-direction: column; gap: 5px; margin: 10px 0 4px; }
+  .meta-item { font-size: 12px; color: #aaa; }
+ 
+  .price-block-full {
+    margin: 14px 0 18px;
+    padding: 14px;
+    background: rgba(255,107,0,0.06);
+    border: 1px solid rgba(255,107,0,0.2);
+    border-radius: 4px;
+  }
+  .price-block-full .p-old { font-size: 14px; color: #e05555; text-decoration: line-through; margin-bottom: 2px; }
+  .price-block-full .p-new { font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 700; color: var(--green); line-height: 1.1; }
+  .price-block-full .p-per { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+  .price-block-full .p-save { font-size: 12px; color: var(--orange); margin-top: 5px; font-weight: 500; }
 
 </style>
 </head>
@@ -1096,96 +1300,220 @@ footer p { font-size:12px; color:var(--text-faint); }
   </iframe>
 </div>
 </section>
-
-<!-- GROUPS -->
 <section class="groups-section" id="groups">
-  <div class="section-label" data-uz="Dars formatlari"          data-ru="Форматы занятий">Dars formatlari</div>
-  <h2 class="section-title" data-uz="Oylik obunalar" data-ru="Месячные абонементы">Oylik obunalar</h2>
-  <!-- Individual badge shown on ALL cards -->
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;margin-top:-8px;">
-    <span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.35);color:var(--orange);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:2px;">
+  <div class="section-label">Dars formatlari</div>
+  <h2 class="section-title">Oylik obunalar</h2>
+  <div style="margin-bottom:28px;">
+    <span class="individual-badge">
       <span style="font-size:14px;">👤</span>
-      <span data-uz="Barcha abonementlar — INDIVIDUAL darslar" data-ru="Все абонементы — ИНДИВИДУАЛЬНЫЕ занятия">Barcha abonementlar — INDIVIDUAL darslar</span>
+      Barcha abonementlar — INDIVIDUAL darslar
     </span>
   </div>
+ 
   <div class="groups-grid">
-
+ 
     <!-- CARD 1: TEZKOR KURS -->
-    <div class="group-card">
-      <div class="group-num">10</div>
-      <h3 data-uz="TEZKOR KURS" data-ru="ЭКСПРЕСС-КУРС">TEZKOR KURS</h3>
-      <p class="card-desc" data-uz="Tez natija kerakmi? 10 ta intensiv dars — asoslarni o'rganib, birinchi qo'shiqni chalib ketasiz." data-ru="Нужен быстрый результат? 10 интенсивных уроков — освоите основы и сыграете первую песню.">Tez natija kerakmi? 10 ta intensiv dars — asoslarni o'rganib, birinchi qo'shiqni chalib ketasiz.</p>
-      <ul>
-        <li data-uz=" Individual dars (1 o'quvchi)" data-ru=" Индивидуально (1 ученик)"> Individual dars (1 o'quvchi)</li>
-        <li data-uz=" 60 daqiqa / dars" data-ru=" 60 минут / урок"> 60 daqiqa / dars</li>
-        <li data-uz=" 10 ta dars (jadval sizga qulay)" data-ru=" 10 уроков (удобное расписание)"> 10 ta dars (jadval sizga qulay)</li>
-        <li data-uz=" Akkordlar, ritm, birinchi qo'shiq" data-ru=" Аккорды, ритм, первая песня"> Akkordlar, ritm, birinchi qo'shiq</li>
-        <li data-uz=" Shaxsiy dars reja" data-ru=" Личный план занятий"> Shaxsiy dars reja</li>
-      </ul>
-      <div class="price-block">
-        <div class="price-new">1 500 000 <span data-uz="so'm" data-ru="сум">so'm</span></div>
-        <div class="price-per" data-uz="150 000 so'm / dars" data-ru="150 000 сум / урок">150 000 so'm / dars</div>
+    <div class="group-card" onclick="toggleCard(this)">
+      <div class="card-summary">
+        <div class="group-num">10</div>
+        <h3>TEZKOR KURS</h3>
+        <p class="card-tagline">10 ta intensiv dars — asoslarni o'rganib, birinchi qo'shiqni chalab ketasiz.</p>
+        <div class="price-wrap">
+          <div class="price-old-mini">2 000 000 so'm</div>
+          <span class="price-main">1 500 000</span><span class="price-unit">so'm</span>
+        </div>
+        <div class="key-facts">
+          <span class="fact-chip">10 dars</span>
+          <span class="fact-chip">60 min / dars</span>
+          <span class="fact-chip">Individual</span>
+        </div>
       </div>
+      <div class="card-details">
+        <div class="details-inner">
+          <div class="details-section-title">Nimalar o'rganasiz</div>
+          <ul class="details-list">
+            <li>Gitara asoslarini o'rganasiz</li>
+            <li>Asosiy akkordlarni chalishni o'zlashtirasiz</li>
+            <li>Ritm va qo'shiqni kuzatib chalishni o'rganasiz</li>
+            <li>O'zingiz yoqtirgan qo'shiqni ijro etishga tayyor bo'lasiz</li>
+            <li>Shaxsiy dars reja tuziladi</li>
+          </ul>
+          <div class="details-section-title">Kurs tafsilotlari</div>
+          <div class="meta-row">
+            <span class="meta-item">📚 Jami darslar soni: 10 ta</span>
+            <span class="meta-item">🕐 Dars davomiyligi: 60 daqiqa</span>
+            <span class="meta-item">👤 Dars jarayoni: Yakka tartibda (individual)</span>
+            <span class="meta-item">📅 Jadval sizga qulay</span>
+          </div>
+          <div class="price-block-full">
+            <div class="p-old">2 000 000 so'm</div>
+            <div class="p-new">1 500 000 so'm</div>
+            <div class="p-per">150 000 so'm / dars</div>
+            <div class="p-save">🔥 500 000 so'm tejaysiz!</div>
+          </div>
+        </div>
+      </div>
+      <button class="expand-btn">
+        <span class="btn-label">Batafsil</span>
+        <span class="expand-icon">▼</span>
+      </button>
     </div>
-
+ 
     <!-- CARD 2: 1 OYLIK -->
-    <div class="group-card">
-      <div class="group-num">1</div>
-      <h3 data-uz="1 OYLIK" data-ru="1 МЕСЯЦ">1 OYLIK</h3>
-      <p class="card-desc" data-uz="Sinab ko'rish uchun ideal. Bir oy ichida real progress ko'rasiz va o'qishni davom ettirasiz." data-ru="Идеально для старта. За месяц увидите реальный прогресс и захотите продолжить.">Sinab ko'rish uchun ideal. Bir oy ichida real progress ko'rasiz.</p>
-      <ul>
-        <li data-uz=" Individual dars (1 o'quvchi)" data-ru=" Индивидуально (1 ученик)"> Individual dars (1 o'quvchi)</li>
-        <li data-uz=" 45 daqiqa / dars" data-ru=" 45 минут / урок"> 45 daqiqa / dars</li>
-        <li data-uz=" 8 dars / oy (haftada 2x)" data-ru=" 8 уроков / мес (2 раза в нед.)"> 8 dars / oy (haftada 2x)</li>
-        <li data-uz=" Asosiy texnika, akkordlar" data-ru=" Базовая техника, аккорды"> Asosiy texnika, akkordlar</li>
-        <li data-uz=" Uy vazifasi va nazorat" data-ru=" Домашние задания и контроль"> Uy vazifasi va nazorat</li>
-      </ul>
-      <div class="price-block">
-        <div class="price-new">800 000 <span data-uz="so'm / oy" data-ru="сум / мес">so'm / oy</span></div>
-        <div class="price-per" data-uz="100 000 so'm / dars" data-ru="100 000 сум / урок">100 000 so'm / dars</div>
+    <div class="group-card" onclick="toggleCard(this)">
+      <div class="card-summary">
+        <div class="group-num">1</div>
+        <h3>1 OYLIK</h3>
+        <p class="card-tagline">Boshlash uchun eng qulay variant. Bir oy ichida real progress ko'rasiz.</p>
+        <div class="price-wrap">
+          <div class="price-old-mini">1 000 000 so'm</div>
+          <span class="price-main">800 000</span><span class="price-unit">so'm / oy</span>
+        </div>
+        <div class="key-facts">
+          <span class="fact-chip">8 dars</span>
+          <span class="fact-chip">45 min / dars</span>
+          <span class="fact-chip">Haftada 2x</span>
+        </div>
       </div>
+      <div class="card-details">
+        <div class="details-inner">
+          <div class="details-section-title">Kimlar uchun</div>
+          <ul class="details-list">
+            <li>Gitara chalishni sinab ko'rmoqchi bo'lganlar</li>
+            <li>Boshlovchilar</li>
+            <li>Qisqa muddatda asoslarni o'rganmoqchi bo'lganlar</li>
+          </ul>
+          <div class="details-section-title">Afzalliklari</div>
+          <ul class="details-list">
+            <li>Gitara asoslari bilan tanishish</li>
+            <li>Birinchi akkordlar va oddiy qo'shiqlar</li>
+            <li>Individual yondashuv</li>
+            <li>Moslashuvchan dars jadvali</li>
+          </ul>
+          <div class="details-section-title">Abonement tafsilotlari</div>
+          <div class="meta-row">
+            <span class="meta-item">📚 Jami darslar soni: 8 ta</span>
+            <span class="meta-item">🕐 Dars davomiyligi: 45 daqiqa</span>
+            <span class="meta-item">👤 Dars jarayoni: Yakka tartibda (individual)</span>
+          </div>
+          <div class="price-block-full">
+            <div class="p-old">1 000 000 so'm</div>
+            <div class="p-new">800 000 so'm / oy</div>
+            <div class="p-per">100 000 so'm / dars</div>
+            <div class="p-save">🔥 200 000 so'm tejaysiz!</div>
+          </div>
+        </div>
+      </div>
+      <button class="expand-btn">
+        <span class="btn-label">Batafsil</span>
+        <span class="expand-icon">▼</span>
+      </button>
     </div>
-
+ 
     <!-- CARD 3: 3 OYLIK — FEATURED -->
-    <div class="group-card featured">
-      <div class="group-card-popular" data-uz="⭐ Eng mashhur" data-ru="⭐ Популярный">⭐ Eng mashhur</div>
-      <div class="group-num">3</div>
-      <h3 data-uz="3 OYLIK" data-ru="3 МЕСЯЦА">3 OYLIK</h3>
-      <p class="card-desc" data-uz="Eng ko'p tanlangan variant. Qo'shiqlarni o'zingiz chalay boshlaysiz va texnikangiz mustahkamlanadi." data-ru="Самый популярный. Начнёте самостоятельно играть песни, техника станет уверенной.">Eng ko'p tanlangan variant. Qo'shiqlarni o'zingiz chalay boshlaysiz.</p>
-      <ul>
-        <li data-uz=" Individual dars (1 o'quvchi)" data-ru=" Индивидуально (1 ученик)"> Individual dars (1 o'quvchi)</li>
-        <li data-uz=" 45 daqiqa / dars" data-ru=" 45 минут / урок"> 45 daqiqa / dars</li>
-        <li data-uz=" 24 dars / 3 oy (haftada 2x)" data-ru=" 24 урока / 3 мес (2 раза в нед.)"> 24 dars / 3 oy (haftada 2x)</li>
-        <li data-uz=" Repertuar, solo, improvizatsiya" data-ru=" Репертуар, соло, импровизация"> Repertuar, solo, improvizatsiya</li>
-        <li data-uz="🎁 Bepul mediatrlar to'plami" data-ru="🎁 Бесплатный набор медиаторов">🎁 Bepul mediatrlar to'plami</li>
-      </ul>
-      <div class="price-block">
-        <div class="price-old">2 040 000 so'm</div>
-        <div class="price-new">1 800 000 <span data-uz="so'm / 3 oy" data-ru="сум / 3 мес">so'm / 3 oy</span></div>
-        <div class="price-discount" data-uz="🔥 240 000 so'm tejaysiz!" data-ru="🔥 Экономите 240 000 сум!">🔥 240 000 so'm tejaysiz!</div>
+    <div class="group-card featured" onclick="toggleCard(this)">
+      <div class="card-summary">
+        <div class="popular-badge">⭐ Eng mashhur</div>
+        <div class="group-num">3</div>
+        <h3>3 OYLIK</h3>
+        <p class="card-tagline">Natija beradigan optimal kurs. Qo'shiqlarni o'zingiz chalay boshlaysiz.</p>
+        <div class="price-wrap">
+          <div class="price-old-mini">3 000 000 so'm</div>
+          <span class="price-main">2 040 000</span><span class="price-unit">so'm / 3 oy</span>
+        </div>
+        <div class="key-facts">
+          <span class="fact-chip">24 dars</span>
+          <span class="fact-chip">45 min / dars</span>
+          <span class="fact-chip">Haftada 2x</span>
+        </div>
       </div>
+      <div class="card-details">
+        <div class="details-inner">
+          <div class="details-section-title">Kimlar uchun</div>
+          <ul class="details-list">
+            <li>Gitara chalishni jiddiy o'rganmoqchi bo'lganlar</li>
+            <li>Bir nechta qo'shiqlarni mustaqil ijro etishni xohlaganlar</li>
+          </ul>
+          <div class="details-section-title">Afzalliklari</div>
+          <ul class="details-list">
+            <li>Texnikani to'liq shakllantirish</li>
+            <li>Akkordlar va ritmni yaxshi o'zlashtirish</li>
+            <li>Bir nechta mashhur qo'shiqlarni chalish</li>
+            <li>Sahna ijrosi uchun tayyorgarlik</li>
+            <li class="emoji">⭐ Eng ko'p tanlanadigan kurs</li>
+          </ul>
+          <div class="details-section-title">Abonement tafsilotlari</div>
+          <div class="meta-row">
+            <span class="meta-item">📚 Jami darslar soni: 24 ta</span>
+            <span class="meta-item">🕐 Dars davomiyligi: 45 daqiqa</span>
+            <span class="meta-item">👤 Dars jarayoni: Yakka tartibda (individual)</span>
+          </div>
+          <div class="price-block-full">
+            <div class="p-old">3 000 000 so'm</div>
+            <div class="p-new">2 040 000 so'm / 3 oy</div>
+            <div class="p-per">85 000 so'm / dars</div>
+            <div class="p-save">🔥 960 000 so'm tejaysiz!</div>
+          </div>
+        </div>
+      </div>
+      <button class="expand-btn">
+        <span class="btn-label">Batafsil</span>
+        <span class="expand-icon">▼</span>
+      </button>
     </div>
-
+ 
     <!-- CARD 4: 6 OYLIK -->
-    <div class="group-card">
-      <div class="group-card-popular" style="background:linear-gradient(135deg,#1a6b3a,#2e9e57);" data-uz="💎 Eng foydali" data-ru="💎 Лучшая цена">💎 Eng foydali</div>
-      <div class="group-num">6</div>
-      <h3 data-uz="6 OYLIK" data-ru="6 МЕСЯЦЕВ">6 OYLIK</h3>
-      <p class="card-desc" data-uz="Jiddiy natija uchun. Yarim yil ichida professional darajaga chiqasiz va mustaqil ijro etasiz." data-ru="Для серьёзного результата. За полгода выйдете на профессиональный уровень.">Jiddiy natija uchun. Yarim yil ichida professional darajaga chiqasiz.</p>
-      <ul>
-        <li data-uz=" Individual dars (1 o'quvchi)" data-ru=" Индивидуально (1 ученик)"> Individual dars (1 o'quvchi)</li>
-        <li data-uz=" 45 daqiqa / dars" data-ru=" 45 минут / урок"> 45 daqiqa / dars</li>
-        <li data-uz=" 48 dars / 6 oy (haftada 2x)" data-ru=" 48 уроков / 6 мес (2 раза в нед.)"> 48 dars / 6 oy (haftada 2x)</li>
-        <li data-uz=" Professional texnika va sahna" data-ru=" Профессиональная техника и сцена"> Professional texnika va sahna</li>
-        <li data-uz="🎁 Bepul gitara stroplari + mediator" data-ru="🎁 Бесплатный ремень + медиаторы">🎁 Bepul gitara stroplari + mediator</li>
-      </ul>
-      <div class="price-block">
-        <div class="price-old">3 360 000 so'm</div>
-        <div class="price-new">2 880 000 <span data-uz="so'm / 6 oy" data-ru="сум / 6 мес">so'm / 6 oy</span></div>
-        <div class="price-discount" style="color:#2ecc71;" data-uz="🔥 480 000 so'm tejaysiz!" data-ru="🔥 Экономите 480 000 сум!">🔥 480 000 so'm tejaysiz!</div>
+    <div class="group-card" onclick="toggleCard(this)">
+      <div class="card-summary">
+        <div class="popular-badge green">💎 Eng foydali</div>
+        <div class="group-num">6</div>
+        <h3>6 OYLIK</h3>
+        <p class="card-tagline">Professional darajaga chiqish uchun. Yarim yil ichida mukammal darajaga yetasiz.</p>
+        <div class="price-wrap">
+          <div class="price-old-mini">6 000 000 so'm</div>
+          <span class="price-main" style="color:#2ecc71;">3 360 000</span><span class="price-unit">so'm / 6 oy</span>
+        </div>
+        <div class="key-facts">
+          <span class="fact-chip">48 dars</span>
+          <span class="fact-chip">45 min / dars</span>
+          <span class="fact-chip">Haftada 2x</span>
+        </div>
       </div>
+      <div class="card-details">
+        <div class="details-inner">
+          <div class="details-section-title">Kimlar uchun</div>
+          <ul class="details-list">
+            <li>Gitara chalishni mukammal o'rganmoqchi bo'lganlar</li>
+            <li>Sahna yoki ijodiy faoliyatni boshlamoqchi bo'lganlar</li>
+          </ul>
+          <div class="details-section-title">Afzalliklari</div>
+          <ul class="details-list">
+            <li>Keng repertuar</li>
+            <li>Murakkab texnikalarni o'rganish</li>
+            <li>Improvizatsiya asoslari</li>
+            <li>Sahna chiqishlari va konsertlarda ishtirok</li>
+            <li class="emoji">🔥 Eng foydali abonement (ko'proq natija + iqtisodiy jihatdan ham qulay)</li>
+          </ul>
+          <div class="details-section-title">Abonement tafsilotlari</div>
+          <div class="meta-row">
+            <span class="meta-item">📚 Jami darslar soni: 48 ta</span>
+            <span class="meta-item">🕐 Dars davomiyligi: 45 daqiqa</span>
+            <span class="meta-item">👤 Dars jarayoni: Yakka tartibda (individual)</span>
+          </div>
+          <div class="price-block-full" style="border-color:rgba(46,204,113,0.25); background:rgba(46,204,113,0.05);">
+            <div class="p-old">6 000 000 so'm</div>
+            <div class="p-new" style="color:#2ecc71;">3 360 000 so'm / 6 oy</div>
+            <div class="p-per">70 000 so'm / dars</div>
+            <div class="p-save" style="color:#2ecc71;">🔥 2 640 000 so'm tejaysiz!</div>
+          </div>
+        </div>
+      </div>
+      <button class="expand-btn">
+        <span class="btn-label">Batafsil</span>
+        <span class="expand-icon">▼</span>
+      </button>
     </div>
-
+ 
   </div>
 </section>
 
@@ -1328,7 +1656,11 @@ function applyTheme(dark) {
   if (b1) b1.textContent = icon;
   if (b2) b2.textContent = icon;
 }
-
+  function toggleCard(card) {
+    card.classList.toggle('open');
+    card.querySelector('.btn-label').textContent =
+      card.classList.contains('open') ? 'Yopish' : 'Batafsil';
+  }
 // Apply on load
 applyTheme(isDark);
 
