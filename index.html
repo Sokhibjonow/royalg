@@ -1015,7 +1015,7 @@ footer p { font-size:12px; color:var(--text-faint); }
       <div class="teacher-photo-icon"><img src="img/IMG_8246.JPG" alt="" style="background-position: top center; background-size: cover; width: 300px; height: 420px;"></div>
       <div class="teacher-photo-name">Sarvar Azimov</div>
     </div>
-    <div class="teacher-info">
+    <div class="teacher-info"> 
       <div class="teacher-name">Sarvar Azimov</div>
       <div class="teacher-title" data-uz="Gitara o'qituvchisi" data-ru="Преподаватель гитары">Gitara o'qituvchisi</div>
       <div class="teacher-divider"></div>
@@ -1370,39 +1370,56 @@ async function handleSubmit(e) {
   const thanks = document.getElementById('thanks');
   const btn = form.querySelector('button[type="submit"]');
 
-  // Get form values
   const inputs = form.querySelectorAll('input');
   const name  = inputs[0].value.trim();
   const phone = inputs[1].value.trim();
 
-  // Telegram config
-  const TOKEN   = '8782508997:AAEvSJ2m1dPv9ENWp5yUC92HRlPsIvkHoWE';
-  const CHAT_ID = '553363897';
+  // ============================================================
+  const TELEGRAM_TOKEN   = '8782508997:AAEvSJ2m1dPv9ENWp5yUC92HRlPsIvkHoWE';
+  const TELEGRAM_CHAT_ID = '553363897';
+  const EDUTIZIM_KEY     = 'dev:c481c1db0f380e09cc5c700e9d1d2f68';
+  const EDUTIZIM_URL     = 'https://edutizim.uz/api/leads';
+  // ============================================================
 
-  // Build message
-  const now = new Date().toLocaleString('ru-RU', {timeZone:'Asia/Tashkent'});
-  const text = `🎸 Yangi o'quvchi!\n👤 Ism: ${name}\n📞 Tel: ${phone}\n🕐 Vaqt: ${now}`;
-
-  // Button loading state
-  const origText = btn.textContent;
   btn.textContent = currentLang === 'uz' ? 'Yuborilmoqda...' : 'Отправка...';
   btn.disabled = true;
   btn.style.opacity = '0.7';
 
-  // Image ping — works everywhere including localhost (no CORS)
-  const encodedText = encodeURIComponent(text);
-  const url = `https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodedText}`;
-  const img = new Image();
-  img.src = url;
+  const now = new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent' });
 
-  // Show success immediately
+  // 1. Отправка в edutizim.uz
+  try {
+    const res = await fetch(EDUTIZIM_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Api-Key': EDUTIZIM_KEY
+      },
+      body: JSON.stringify({
+        name:    name,
+        phone:   phone,
+        source:  'Royal Music School — сайт',
+        comment: 'Заявка на бесплатный пробный урок (Gitara kursi)',
+        date:    now
+      })
+    });
+    console.log('edutizim status:', res.status);
+  } catch(err) {
+    console.warn('edutizim error:', err);
+  }
+
+  // 2. Дублирование в Telegram (подстраховка)
+  const tgText = `🎸 Yangi o'quvchi!\n👤 Ism: ${name}\n📞 Tel: ${phone}\n🕐 Vaqt: ${now}`;
+  new Image().src = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(tgText)}`;
+
+  // 3. Показать успех
   setTimeout(() => {
     form.style.display = 'none';
     thanks.textContent = currentLang === 'uz'
       ? "✓ Rahmat! Tez orada siz bilan bog'lanamiz."
       : '✓ Спасибо! Мы свяжемся с вами в ближайшее время.';
     thanks.style.display = 'block';
-  }, 600);
+  }, 700);
 }
 
 /* ===== INTERACTIVE GUITAR ENGINE ===== */
