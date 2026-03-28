@@ -980,129 +980,178 @@ footer p { font-size:12px; color:var(--text-faint); }
     flex-direction: column;
   }
  
-  .group-card:hover { border-color: rgba(255,107,0,0.4); box-shadow: 0 4px 30px rgba(255,107,0,0.08); }
-  .group-card.featured { background: var(--card-featured); border-color: rgba(255,107,0,0.55); box-shadow: 0 0 40px rgba(255,107,0,0.13); }
-  .group-card.open { border-color: rgba(255,107,0,0.6); box-shadow: 0 6px 40px rgba(255,107,0,0.16); }
- 
-  .popular-badge {
-    display: inline-block;
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 5px 14px;
-    border-radius: 3px;
-    margin-bottom: 14px;
-    background: linear-gradient(135deg, #a84400, var(--orange));
-    color: #fff;
+    /* ===== THEMES ===== */
+  [data-theme="dark"] {
+    --bg:            #1a1a1a;
+    --card-bg:       #222;
+    --card-feat:     #252520;
+    --text:          #ddd;
+    --text-muted:    #888;
+    --heading:       #fff;
+    --border:        rgba(255,255,255,0.08);
+    --chip-bg:       rgba(255,255,255,0.05);
+    --chip-border:   rgba(255,255,255,0.10);
+    --chip-text:     #aaa;
+    --sep:           rgba(255,255,255,0.05);
+    --btn-bg:        rgba(255,107,0,0.07);
+    --btn-border:    rgba(255,107,0,0.18);
+    --pbg:           rgba(255,107,0,0.06);
+    --pbr:           rgba(255,107,0,0.20);
   }
-  .popular-badge.green { background: linear-gradient(135deg, var(--green-dark), #2e9e57); }
- 
-  /* Summary fills remaining space so btn always at bottom */
-  .card-summary {
-    padding: 28px 24px 20px;
-    flex: 1;
+  [data-theme="light"] {
+    --bg:            #f0ebe5;
+    --card-bg:       #fff;
+    --card-feat:     #fff9f5;
+    --text:          #2a2a2a;
+    --text-muted:    #666;
+    --heading:       #111;
+    --border:        rgba(0,0,0,0.10);
+    --chip-bg:       rgba(0,0,0,0.04);
+    --chip-border:   rgba(0,0,0,0.10);
+    --chip-text:     #444;
+    --sep:           rgba(0,0,0,0.06);
+    --btn-bg:        rgba(255,107,0,0.06);
+    --btn-border:    rgba(255,107,0,0.20);
+    --pbg:           rgba(255,107,0,0.05);
+    --pbr:           rgba(255,107,0,0.20);
   }
+ 
+  :root { --orange:#ff6b00; --green:#20b85a; --red:#e05555; --gd:#1a6b3a; }
+ 
+  * { box-sizing:border-box; margin:0; padding:0; }
+ 
+  body {
+    background: var(--bg);
+    font-family: 'Roboto', sans-serif;
+    color: var(--text);
+    padding: 28px 16px;
+    transition: background .3s, color .3s;
+  }
+ 
+  /* demo controls */
+  .demo-bar {
+    max-width: 1180px; margin: 0 auto 20px;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .cb {
+    font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:1.5px;
+    padding:5px 14px; border-radius:3px;
+    border:1px solid var(--border); background:var(--chip-bg); color:var(--text);
+    cursor:pointer; transition:all .2s;
+  }
+  .cb.active, .cb:hover { background:var(--orange); color:#fff; border-color:var(--orange); }
+ 
+  /* ===== SECTION ===== */
+  .groups-section { max-width:1180px; margin:0 auto; }
+ 
+  .section-label {
+    font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:3px;
+    text-transform:uppercase; color:var(--orange); margin-bottom:5px;
+  }
+  .section-title {
+    font-family:'Oswald',sans-serif; font-size:28px; font-weight:700;
+    color:var(--heading); margin-bottom:12px; line-height:1.1;
+  }
+  .ind-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(255,107,0,0.08); border:1px solid rgba(255,107,0,0.28);
+    color:var(--orange); font-family:'Oswald',sans-serif;
+    font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    padding:5px 13px; border-radius:2px; margin-bottom:18px;
+  }
+ 
+  /* ===== GRID — align:start so only clicked card grows ===== */
+  .groups-grid {
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:14px; align-items:start;
+  }
+  @media(max-width:1020px){ .groups-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width: 560px){ .groups-grid{ grid-template-columns:1fr; } }
+ 
+  /* ===== CARD ===== */
+  .group-card {
+    background:var(--card-bg); border:1px solid var(--border);
+    border-radius:6px; overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:border-color .25s, box-shadow .25s;
+  }
+  .group-card:hover        { border-color:rgba(255,107,0,.35); }
+  .group-card.featured     { background:var(--card-feat); border-color:rgba(255,107,0,.50); }
+  .group-card.open         { border-color:rgba(255,107,0,.65); box-shadow:0 4px 28px rgba(255,107,0,.13); }
+ 
+  .pop-badge {
+    display:inline-block; font-family:'Oswald',sans-serif;
+    font-size:10px; letter-spacing:1.5px; text-transform:uppercase;
+    padding:4px 11px; border-radius:3px; margin-bottom:9px;
+    background:linear-gradient(135deg,#a84400,var(--orange)); color:#fff;
+  }
+  .pop-badge.green { background:linear-gradient(135deg,var(--gd),#2e9e57); }
+ 
+  /* summary */
+  .card-summary { padding:18px 18px 14px; cursor:pointer; user-select:none; }
  
   .group-num {
-    font-family: 'Oswald', sans-serif;
-    font-size: 64px;
-    font-weight: 700;
-    color: var(--orange);
-    opacity: 0.85;
-    line-height: 1;
-    margin-bottom: 4px;
+    font-family:'Oswald',sans-serif; font-size:52px; font-weight:700;
+    color:var(--orange); line-height:1; margin-bottom:2px;
   }
- 
   .group-card h3 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
+    font-family:'Oswald',sans-serif; font-size:16px; font-weight:600;
+    color:var(--heading); letter-spacing:.8px; margin-bottom:4px;
+  }
+  .tagline { font-size:11.5px; color:var(--text-muted); margin-bottom:11px; line-height:1.45; }
+ 
+  .price-wrap { margin-bottom:9px; }
+  .p-old-s  { font-size:12px; color:var(--red); text-decoration:line-through; margin-bottom:1px; }
+  .p-main   { font-family:'Oswald',sans-serif; font-size:24px; font-weight:700; color:var(--green); line-height:1; }
+  .p-unit   { font-size:11px; color:var(--text-muted); margin-left:3px; }
+ 
+  .key-facts { display:flex; gap:6px; flex-wrap:wrap; margin-top:7px; }
+  .chip {
+    background:var(--chip-bg); border:1px solid var(--chip-border);
+    border-radius:3px; padding:3px 8px; font-size:10.5px;
+    color:var(--chip-text); white-space:nowrap;
   }
  
-  .card-tagline { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; }
- 
-  .price-wrap { margin-bottom: 12px; }
-  .price-old-mini { font-size: 13px; color: #e05555; text-decoration: line-through; margin-bottom: 2px; }
-  .price-main { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; color: var(--green); line-height: 1; }
-  .price-unit { font-size: 12px; color: var(--text-muted); margin-left: 4px; }
- 
-  .key-facts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-  .fact-chip { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 3px; padding: 4px 10px; font-size: 11px; color: #bbb; white-space: nowrap; }
- 
-  /* ---- EXPAND BUTTON ---- */
-  .expand-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    width: 100%;
-    padding: 11px;
-    background: rgba(255,107,0,0.07);
-    border: none;
-    border-top: 1px solid rgba(255,107,0,0.18);
-    color: var(--orange);
-    font-family: 'Oswald', sans-serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s;
-    flex-shrink: 0;
+  /* expand button */
+  .exp-btn {
+    display:flex; align-items:center; justify-content:center; gap:5px;
+    width:100%; padding:9px; background:var(--btn-bg);
+    border:none; border-top:1px solid var(--btn-border);
+    color:var(--orange); font-family:'Oswald',sans-serif;
+    font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    cursor:pointer; transition:background .2s; flex-shrink:0;
   }
-  .expand-btn:hover { background: rgba(255,107,0,0.14); }
+  .exp-btn:hover { background:rgba(255,107,0,.13); }
+  .exp-icon { display:inline-block; transition:transform .32s ease; font-size:11px; }
+  .group-card.open .exp-icon { transform:rotate(180deg); }
  
-  .expand-icon { display: inline-block; transition: transform 0.35s ease; font-size: 13px; }
-  .group-card.open .expand-icon { transform: rotate(180deg); }
+  /* details accordion */
+  .card-det { max-height:0; overflow:hidden; transition:max-height .45s cubic-bezier(.4,0,.2,1); }
+  .group-card.open .card-det { max-height:700px; }
  
-  /* ---- DETAILS ---- */
-  .card-details { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
-  .group-card.open .card-details { max-height: 900px; }
+  .det-inner { padding:13px 18px 4px; border-top:1px solid var(--sep); }
  
-  .details-inner { padding: 16px 24px 4px; border-top: 1px solid var(--border); }
- 
-  .details-section-title {
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--orange);
-    margin-bottom: 8px;
-    margin-top: 14px;
+  .dt { /* section title */
+    font-family:'Oswald',sans-serif; font-size:9px; letter-spacing:2.5px;
+    text-transform:uppercase; color:var(--orange);
+    margin-bottom:7px; margin-top:12px;
   }
-  .details-section-title:first-child { margin-top: 0; }
+  .dt:first-child { margin-top:0; }
  
-  .details-list { list-style: none; padding: 0; margin: 0 0 4px; }
-  .details-list li {
-    font-size: 13px;
-    color: var(--text);
-    padding: 5px 0 5px 20px;
-    position: relative;
-    line-height: 1.4;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+  .dl { list-style:none; padding:0; margin:0 0 2px; }
+  .dl li {
+    font-size:12px; color:var(--text);
+    padding:4px 0 4px 17px; position:relative;
+    line-height:1.4; border-bottom:1px solid var(--sep);
   }
-  .details-list li:last-child { border-bottom: none; }
-  .details-list li::before { content: '♪'; position: absolute; left: 0; color: var(--orange); font-size: 10px; top: 7px; }
-  .details-list li.emoji::before { content: none; }
-  .details-list li.emoji { padding-left: 2px; }
+  .dl li:last-child { border-bottom:none; }
+  .dl li::before { content:'♪'; position:absolute; left:0; color:var(--orange); font-size:9px; top:6px; }
+  .dl li.em::before { content:none; }
+  .dl li.em { padding-left:2px; }
  
-  .meta-row { display: flex; flex-direction: column; gap: 5px; margin: 10px 0 4px; }
-  .meta-item { font-size: 12px; color: #aaa; }
- 
-  .price-block-full {
-    margin: 14px 0 18px;
-    padding: 14px;
-    background: rgba(255,107,0,0.06);
-    border: 1px solid rgba(255,107,0,0.2);
-    border-radius: 4px;
-  }
-  .price-block-full .p-old { font-size: 14px; color: #e05555; text-decoration: line-through; margin-bottom: 2px; }
-  .price-block-full .p-new { font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 700; color: var(--green); line-height: 1.1; }
-  .price-block-full .p-per { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
-  .price-block-full .p-save { font-size: 12px; color: var(--orange); margin-top: 5px; font-weight: 500; }
+  .meta-r { display:flex; flex-direction:column; gap:4px; margin:8px 0 14px; }
+  .meta-i { font-size:11px; color:var(--text-muted); }
+</style>
 
 </style>
 </head>
@@ -1300,221 +1349,211 @@ footer p { font-size:12px; color:var(--text-faint); }
   </iframe>
 </div>
 </section>
-<section class="groups-section" id="groups">
-  <div class="section-label">Dars formatlari</div>
-  <h2 class="section-title">Oylik obunalar</h2>
-  <div style="margin-bottom:28px;">
-    <span class="individual-badge">
-      <span style="font-size:14px;">👤</span>
-      Barcha abonementlar — INDIVIDUAL darslar
+<section class="groups-section" id="groups" style="width: 100%;">
+  <div class="section-label"  data-uz="Dars formatlari"  data-ru="Форматы занятий">Dars formatlari</div>
+  <h2 class="section-title"  data-uz="Oylik obunalar"   data-ru="Месячные абонементы">Oylik obunalar</h2>
+  <div style="margin-bottom:16px;">
+    <span class="ind-badge">
+      <span style="font-size:13px;">👤</span>
+      <span data-uz="Barcha abonementlar — INDIVIDUAL darslar"
+            data-ru="Все абонементы — ИНДИВИДУАЛЬНЫЕ занятия">Barcha abonementlar — INDIVIDUAL darslar</span>
     </span>
   </div>
  
   <div class="groups-grid">
  
-    <!-- CARD 1: TEZKOR KURS -->
-    <div class="group-card" onclick="toggleCard(this)">
-      <div class="card-summary">
+    <!-- ── CARD 1: TEZKOR KURS ── -->
+    <div class="group-card">
+      <div class="card-summary" onclick="toggleCard(this.closest('.group-card'))">
         <div class="group-num">10</div>
-        <h3>TEZKOR KURS</h3>
-        <p class="card-tagline">10 ta intensiv dars — asoslarni o'rganib, birinchi qo'shiqni chalab ketasiz.</p>
+        <h3 data-uz="TEZKOR KURS" data-ru="ЭКСПРЕСС-КУРС">TEZKOR KURS</h3>
+        <p class="tagline"
+           data-uz="10 ta intensiv dars — asoslarni o'rganib, birinchi qo'shiqni chalab ketasiz."
+           data-ru="10 интенсивных уроков — освоите основы и сыграете первую песню.">
+          10 ta intensiv dars — asoslarni o'rganib, birinchi qo'shiqni chalab ketasiz.</p>
         <div class="price-wrap">
-          <div class="price-old-mini">2 000 000 so'm</div>
-          <span class="price-main">1 500 000</span><span class="price-unit">so'm</span>
+          <div class="p-old-s">2 000 000 so'm</div>
+          <span class="p-main">1 500 000</span><span class="p-unit" data-uz="so'm" data-ru="сум">so'm</span>
         </div>
         <div class="key-facts">
-          <span class="fact-chip">10 dars</span>
-          <span class="fact-chip">60 min / dars</span>
-          <span class="fact-chip">Individual</span>
+          <span class="chip" data-uz="10 dars"        data-ru="10 уроков">10 dars</span>
+          <span class="chip" data-uz="60 min / dars"  data-ru="60 мин / урок">60 min / dars</span>
+          <span class="chip" data-uz="Individual"     data-ru="Индивидуально">Individual</span>
         </div>
       </div>
-      <div class="card-details">
-        <div class="details-inner">
-          <div class="details-section-title">Nimalar o'rganasiz</div>
-          <ul class="details-list">
-            <li>Gitara asoslarini o'rganasiz</li>
-            <li>Asosiy akkordlarni chalishni o'zlashtirasiz</li>
-            <li>Ritm va qo'shiqni kuzatib chalishni o'rganasiz</li>
-            <li>O'zingiz yoqtirgan qo'shiqni ijro etishga tayyor bo'lasiz</li>
-            <li>Shaxsiy dars reja tuziladi</li>
+      <div class="card-det">
+        <div class="det-inner">
+          <div class="dt" data-uz="Nimalar o'rganasiz" data-ru="Чему научитесь">Nimalar o'rganasiz</div>
+          <ul class="dl">
+            <li data-uz="Gitara asoslarini o'rganasiz"                              data-ru="Освоите основы гитары">Gitara asoslarini o'rganasiz</li>
+            <li data-uz="Asosiy akkordlarni chalishni o'zlashtirasiz"               data-ru="Научитесь играть основные аккорды">Asosiy akkordlarni chalishni o'zlashtirasiz</li>
+            <li data-uz="Ritm va qo'shiqni kuzatib chalishni o'rganasiz"            data-ru="Освоите ритм и аккомпанемент">Ritm va qo'shiqni kuzatib chalishni o'rganasiz</li>
+            <li data-uz="O'zingiz yoqtirgan qo'shiqni ijro etishga tayyor bo'lasiz" data-ru="Будете готовы сыграть любимую песню">O'zingiz yoqtirgan qo'shiqni ijro etishga tayyor bo'lasiz</li>
+            <li data-uz="Shaxsiy dars reja tuziladi"                                data-ru="Составим личный план занятий">Shaxsiy dars reja tuziladi</li>
           </ul>
-          <div class="details-section-title">Kurs tafsilotlari</div>
-          <div class="meta-row">
-            <span class="meta-item">📚 Jami darslar soni: 10 ta</span>
-            <span class="meta-item">🕐 Dars davomiyligi: 60 daqiqa</span>
-            <span class="meta-item">👤 Dars jarayoni: Yakka tartibda (individual)</span>
-            <span class="meta-item">📅 Jadval sizga qulay</span>
-          </div>
-          <div class="price-block-full">
-            <div class="p-old">2 000 000 so'm</div>
-            <div class="p-new">1 500 000 so'm</div>
-            <div class="p-per">150 000 so'm / dars</div>
-            <div class="p-save">🔥 500 000 so'm tejaysiz!</div>
+          <div class="dt" data-uz="Kurs tafsilotlari" data-ru="Детали курса">Kurs tafsilotlari</div>
+          <div class="meta-r">
+            <span class="meta-i" data-uz="📚 Jami darslar soni: 10 ta"       data-ru="📚 Всего уроков: 10">📚 Jami darslar soni: 10 ta</span>
+            <span class="meta-i" data-uz="🕐 Dars davomiyligi: 60 daqiqa"    data-ru="🕐 Длительность: 60 минут">🕐 Dars davomiyligi: 60 daqiqa</span>
+            <span class="meta-i" data-uz="👤 Yakka tartibda (individual)"    data-ru="👤 Формат: индивидуально">👤 Yakka tartibda (individual)</span>
+            <span class="meta-i" data-uz="📅 Jadval sizga qulay"             data-ru="📅 Удобный для вас график">📅 Jadval sizga qulay</span>
           </div>
         </div>
       </div>
-      <button class="expand-btn">
-        <span class="btn-label">Batafsil</span>
-        <span class="expand-icon">▼</span>
+      <button class="exp-btn" onclick="toggleCard(this.closest('.group-card'))">
+        <span class="btn-lbl" data-uz="Batafsil" data-ru="Подробнее">Batafsil</span>
+        <span class="exp-icon">▼</span>
       </button>
     </div>
  
-    <!-- CARD 2: 1 OYLIK -->
-    <div class="group-card" onclick="toggleCard(this)">
-      <div class="card-summary">
+    <!-- ── CARD 2: 1 OYLIK ── -->
+    <div class="group-card">
+      <div class="card-summary" onclick="toggleCard(this.closest('.group-card'))">
         <div class="group-num">1</div>
-        <h3>1 OYLIK</h3>
-        <p class="card-tagline">Boshlash uchun eng qulay variant. Bir oy ichida real progress ko'rasiz.</p>
+        <h3 data-uz="1 OYLIK" data-ru="1 МЕСЯЦ">1 OYLIK</h3>
+        <p class="tagline"
+           data-uz="Boshlash uchun eng qulay variant. Bir oy ichida real progress ko'rasiz."
+           data-ru="Идеальный старт. За месяц увидите реальный прогресс.">
+          Boshlash uchun eng qulay variant. Bir oy ichida real progress ko'rasiz.</p>
         <div class="price-wrap">
-          <div class="price-old-mini">1 000 000 so'm</div>
-          <span class="price-main">800 000</span><span class="price-unit">so'm / oy</span>
+          <div class="p-old-s">1 000 000 so'm</div>
+          <span class="p-main">800 000</span><span class="p-unit" data-uz="so'm / oy" data-ru="сум / мес">so'm / oy</span>
         </div>
         <div class="key-facts">
-          <span class="fact-chip">8 dars</span>
-          <span class="fact-chip">45 min / dars</span>
-          <span class="fact-chip">Haftada 2x</span>
+          <span class="chip" data-uz="8 dars"         data-ru="8 уроков">8 dars</span>
+          <span class="chip" data-uz="45 min / dars"  data-ru="45 мин / урок">45 min / dars</span>
+          <span class="chip" data-uz="Haftada 2x"     data-ru="2 раза в неделю">Haftada 2x</span>
         </div>
       </div>
-      <div class="card-details">
-        <div class="details-inner">
-          <div class="details-section-title">Kimlar uchun</div>
-          <ul class="details-list">
-            <li>Gitara chalishni sinab ko'rmoqchi bo'lganlar</li>
-            <li>Boshlovchilar</li>
-            <li>Qisqa muddatda asoslarni o'rganmoqchi bo'lganlar</li>
+      <div class="card-det">
+        <div class="det-inner">
+          <div class="dt" data-uz="Kimlar uchun" data-ru="Для кого">Kimlar uchun</div>
+          <ul class="dl">
+            <li data-uz="Gitara chalishni sinab ko'rmoqchi bo'lganlar"      data-ru="Кто хочет попробовать игру на гитаре">Gitara chalishni sinab ko'rmoqchi bo'lganlar</li>
+            <li data-uz="Boshlovchilar"                                      data-ru="Начинающие">Boshlovchilar</li>
+            <li data-uz="Qisqa muddatda asoslarni o'rganmoqchi bo'lganlar"  data-ru="Кто хочет быстро освоить основы">Qisqa muddatda asoslarni o'rganmoqchi bo'lganlar</li>
           </ul>
-          <div class="details-section-title">Afzalliklari</div>
-          <ul class="details-list">
-            <li>Gitara asoslari bilan tanishish</li>
-            <li>Birinchi akkordlar va oddiy qo'shiqlar</li>
-            <li>Individual yondashuv</li>
-            <li>Moslashuvchan dars jadvali</li>
+          <div class="dt" data-uz="Afzalliklari" data-ru="Преимущества">Afzalliklari</div>
+          <ul class="dl">
+            <li data-uz="Gitara asoslari bilan tanishish"       data-ru="Знакомство с основами гитары">Gitara asoslari bilan tanishish</li>
+            <li data-uz="Birinchi akkordlar va oddiy qo'shiqlar" data-ru="Первые аккорды и простые песни">Birinchi akkordlar va oddiy qo'shiqlar</li>
+            <li data-uz="Individual yondashuv"                  data-ru="Индивидуальный подход">Individual yondashuv</li>
+            <li data-uz="Moslashuvchan dars jadvali"            data-ru="Гибкое расписание занятий">Moslashuvchan dars jadvali</li>
           </ul>
-          <div class="details-section-title">Abonement tafsilotlari</div>
-          <div class="meta-row">
-            <span class="meta-item">📚 Jami darslar soni: 8 ta</span>
-            <span class="meta-item">🕐 Dars davomiyligi: 45 daqiqa</span>
-            <span class="meta-item">👤 Dars jarayoni: Yakka tartibda (individual)</span>
-          </div>
-          <div class="price-block-full">
-            <div class="p-old">1 000 000 so'm</div>
-            <div class="p-new">800 000 so'm / oy</div>
-            <div class="p-per">100 000 so'm / dars</div>
-            <div class="p-save">🔥 200 000 so'm tejaysiz!</div>
+          <div class="dt" data-uz="Tafsilotlar" data-ru="Детали">Tafsilotlar</div>
+          <div class="meta-r">
+            <span class="meta-i" data-uz="📚 Jami darslar soni: 8 ta"      data-ru="📚 Всего уроков: 8">📚 Jami darslar soni: 8 ta</span>
+            <span class="meta-i" data-uz="🕐 Dars davomiyligi: 45 daqiqa"  data-ru="🕐 Длительность: 45 минут">🕐 Dars davomiyligi: 45 daqiqa</span>
+            <span class="meta-i" data-uz="👤 Yakka tartibda (individual)"  data-ru="👤 Формат: индивидуально">👤 Yakka tartibda (individual)</span>
           </div>
         </div>
       </div>
-      <button class="expand-btn">
-        <span class="btn-label">Batafsil</span>
-        <span class="expand-icon">▼</span>
+      <button class="exp-btn" onclick="toggleCard(this.closest('.group-card'))">
+        <span class="btn-lbl" data-uz="Batafsil" data-ru="Подробнее">Batafsil</span>
+        <span class="exp-icon">▼</span>
       </button>
     </div>
  
-    <!-- CARD 3: 3 OYLIK — FEATURED -->
-    <div class="group-card featured" onclick="toggleCard(this)">
-      <div class="card-summary">
-        <div class="popular-badge">⭐ Eng mashhur</div>
+    <!-- ── CARD 3: 3 OYLIK (featured) ── -->
+    <div class="group-card featured">
+      <div class="card-summary" onclick="toggleCard(this.closest('.group-card'))">
+        <div class="pop-badge" data-uz="⭐ Eng mashhur" data-ru="⭐ Популярный">⭐ Eng mashhur</div>
         <div class="group-num">3</div>
-        <h3>3 OYLIK</h3>
-        <p class="card-tagline">Natija beradigan optimal kurs. Qo'shiqlarni o'zingiz chalay boshlaysiz.</p>
+        <h3 data-uz="3 OYLIK" data-ru="3 МЕСЯЦА">3 OYLIK</h3>
+        <p class="tagline"
+           data-uz="Natija beradigan optimal kurs. Qo'shiqlarni o'zingiz chalay boshlaysiz."
+           data-ru="Оптимальный курс. Начнёте самостоятельно играть любимые песни.">
+          Natija beradigan optimal kurs. Qo'shiqlarni o'zingiz chalay boshlaysiz.</p>
         <div class="price-wrap">
-          <div class="price-old-mini">3 000 000 so'm</div>
-          <span class="price-main">2 040 000</span><span class="price-unit">so'm / 3 oy</span>
+          <div class="p-old-s">3 000 000 so'm</div>
+          <span class="p-main">2 040 000</span><span class="p-unit" data-uz="so'm / 3 oy" data-ru="сум / 3 мес">so'm / 3 oy</span>
         </div>
         <div class="key-facts">
-          <span class="fact-chip">24 dars</span>
-          <span class="fact-chip">45 min / dars</span>
-          <span class="fact-chip">Haftada 2x</span>
+          <span class="chip" data-uz="24 dars"        data-ru="24 урока">24 dars</span>
+          <span class="chip" data-uz="45 min / dars"  data-ru="45 мин / урок">45 min / dars</span>
+          <span class="chip" data-uz="Haftada 2x"     data-ru="2 раза в неделю">Haftada 2x</span>
         </div>
       </div>
-      <div class="card-details">
-        <div class="details-inner">
-          <div class="details-section-title">Kimlar uchun</div>
-          <ul class="details-list">
-            <li>Gitara chalishni jiddiy o'rganmoqchi bo'lganlar</li>
-            <li>Bir nechta qo'shiqlarni mustaqil ijro etishni xohlaganlar</li>
+      <div class="card-det">
+        <div class="det-inner">
+          <div class="dt" data-uz="Kimlar uchun" data-ru="Для кого">Kimlar uchun</div>
+          <ul class="dl">
+            <li data-uz="Gitara chalishni jiddiy o'rganmoqchi bo'lganlar"           data-ru="Кто серьёзно хочет научиться играть">Gitara chalishni jiddiy o'rganmoqchi bo'lganlar</li>
+            <li data-uz="Bir nechta qo'shiqlarni mustaqil ijro etishni xohlaganlar" data-ru="Кто хочет самостоятельно играть несколько песен">Bir nechta qo'shiqlarni mustaqil ijro etishni xohlaganlar</li>
           </ul>
-          <div class="details-section-title">Afzalliklari</div>
-          <ul class="details-list">
-            <li>Texnikani to'liq shakllantirish</li>
-            <li>Akkordlar va ritmni yaxshi o'zlashtirish</li>
-            <li>Bir nechta mashhur qo'shiqlarni chalish</li>
-            <li>Sahna ijrosi uchun tayyorgarlik</li>
-            <li class="emoji">⭐ Eng ko'p tanlanadigan kurs</li>
+          <div class="dt" data-uz="Afzalliklari" data-ru="Преимущества">Afzalliklari</div>
+          <ul class="dl">
+            <li data-uz="Texnikani to'liq shakllantirish"          data-ru="Полное формирование техники">Texnikani to'liq shakllantirish</li>
+            <li data-uz="Akkordlar va ritmni yaxshi o'zlashtirish" data-ru="Уверенное освоение аккордов и ритма">Akkordlar va ritmni yaxshi o'zlashtirish</li>
+            <li data-uz="Bir nechta mashhur qo'shiqlarni chalish"  data-ru="Несколько популярных песен в репертуаре">Bir nechta mashhur qo'shiqlarni chalish</li>
+            <li data-uz="Sahna ijrosi uchun tayyorgarlik"          data-ru="Подготовка к выступлению на сцене">Sahna ijrosi uchun tayyorgarlik</li>
+            <li class="em" data-uz="⭐ Eng ko'p tanlanadigan kurs" data-ru="⭐ Самый популярный курс">⭐ Eng ko'p tanlanadigan kurs</li>
           </ul>
-          <div class="details-section-title">Abonement tafsilotlari</div>
-          <div class="meta-row">
-            <span class="meta-item">📚 Jami darslar soni: 24 ta</span>
-            <span class="meta-item">🕐 Dars davomiyligi: 45 daqiqa</span>
-            <span class="meta-item">👤 Dars jarayoni: Yakka tartibda (individual)</span>
-          </div>
-          <div class="price-block-full">
-            <div class="p-old">3 000 000 so'm</div>
-            <div class="p-new">2 040 000 so'm / 3 oy</div>
-            <div class="p-per">85 000 so'm / dars</div>
-            <div class="p-save">🔥 960 000 so'm tejaysiz!</div>
+          <div class="dt" data-uz="Tafsilotlar" data-ru="Детали">Tafsilotlar</div>
+          <div class="meta-r">
+            <span class="meta-i" data-uz="📚 Jami darslar soni: 24 ta"     data-ru="📚 Всего уроков: 24">📚 Jami darslar soni: 24 ta</span>
+            <span class="meta-i" data-uz="🕐 Dars davomiyligi: 45 daqiqa"  data-ru="🕐 Длительность: 45 минут">🕐 Dars davomiyligi: 45 daqiqa</span>
+            <span class="meta-i" data-uz="👤 Yakka tartibda (individual)"  data-ru="👤 Формат: индивидуально">👤 Yakka tartibda (individual)</span>
           </div>
         </div>
       </div>
-      <button class="expand-btn">
-        <span class="btn-label">Batafsil</span>
-        <span class="expand-icon">▼</span>
+      <button class="exp-btn" onclick="toggleCard(this.closest('.group-card'))">
+        <span class="btn-lbl" data-uz="Batafsil" data-ru="Подробнее">Batafsil</span>
+        <span class="exp-icon">▼</span>
       </button>
     </div>
  
-    <!-- CARD 4: 6 OYLIK -->
-    <div class="group-card" onclick="toggleCard(this)">
-      <div class="card-summary">
-        <div class="popular-badge green">💎 Eng foydali</div>
+    <!-- ── CARD 4: 6 OYLIK ── -->
+    <div class="group-card">
+      <div class="card-summary" onclick="toggleCard(this.closest('.group-card'))">
+        <div class="pop-badge green" data-uz="💎 Eng foydali" data-ru="💎 Лучшая цена">💎 Eng foydali</div>
         <div class="group-num">6</div>
-        <h3>6 OYLIK</h3>
-        <p class="card-tagline">Professional darajaga chiqish uchun. Yarim yil ichida mukammal darajaga yetasiz.</p>
+        <h3 data-uz="6 OYLIK" data-ru="6 МЕСЯЦЕВ">6 OYLIK</h3>
+        <p class="tagline"
+           data-uz="Professional darajaga chiqish uchun. Yarim yil ichida mukammal darajaga yetasiz."
+           data-ru="Для профессионального уровня. За полгода выйдете на высокий уровень.">
+          Professional darajaga chiqish uchun. Yarim yil ichida mukammal darajaga yetasiz.</p>
         <div class="price-wrap">
-          <div class="price-old-mini">6 000 000 so'm</div>
-          <span class="price-main" style="color:#2ecc71;">3 360 000</span><span class="price-unit">so'm / 6 oy</span>
+          <div class="p-old-s">6 000 000 so'm</div>
+          <span class="p-main" style="color:var(--green);">3 360 000</span><span class="p-unit" data-uz="so'm / 6 oy" data-ru="сум / 6 мес">so'm / 6 oy</span>
         </div>
         <div class="key-facts">
-          <span class="fact-chip">48 dars</span>
-          <span class="fact-chip">45 min / dars</span>
-          <span class="fact-chip">Haftada 2x</span>
+          <span class="chip" data-uz="48 dars"        data-ru="48 уроков">48 dars</span>
+          <span class="chip" data-uz="45 min / dars"  data-ru="45 мин / урок">45 min / dars</span>
+          <span class="chip" data-uz="Haftada 2x"     data-ru="2 раза в неделю">Haftada 2x</span>
         </div>
       </div>
-      <div class="card-details">
-        <div class="details-inner">
-          <div class="details-section-title">Kimlar uchun</div>
-          <ul class="details-list">
-            <li>Gitara chalishni mukammal o'rganmoqchi bo'lganlar</li>
-            <li>Sahna yoki ijodiy faoliyatni boshlamoqchi bo'lganlar</li>
+      <div class="card-det">
+        <div class="det-inner">
+          <div class="dt" data-uz="Kimlar uchun" data-ru="Для кого">Kimlar uchun</div>
+          <ul class="dl">
+            <li data-uz="Gitara chalishni mukammal o'rganmoqchi bo'lganlar"    data-ru="Кто хочет в совершенстве овладеть гитарой">Gitara chalishni mukammal o'rganmoqchi bo'lganlar</li>
+            <li data-uz="Sahna yoki ijodiy faoliyatni boshlamoqchi bo'lganlar" data-ru="Кто хочет выступать на сцене или заниматься творчески">Sahna yoki ijodiy faoliyatni boshlamoqchi bo'lganlar</li>
           </ul>
-          <div class="details-section-title">Afzalliklari</div>
-          <ul class="details-list">
-            <li>Keng repertuar</li>
-            <li>Murakkab texnikalarni o'rganish</li>
-            <li>Improvizatsiya asoslari</li>
-            <li>Sahna chiqishlari va konsertlarda ishtirok</li>
-            <li class="emoji">🔥 Eng foydali abonement (ko'proq natija + iqtisodiy jihatdan ham qulay)</li>
+          <div class="dt" data-uz="Afzalliklari" data-ru="Преимущества">Afzalliklari</div>
+          <ul class="dl">
+            <li data-uz="Keng repertuar"                             data-ru="Широкий репертуар">Keng repertuar</li>
+            <li data-uz="Murakkab texnikalarni o'rganish"            data-ru="Изучение сложных техник">Murakkab texnikalarni o'rganish</li>
+            <li data-uz="Improvizatsiya asoslari"                    data-ru="Основы импровизации">Improvizatsiya asoslari</li>
+            <li data-uz="Sahna chiqishlari va konsertlarda ishtirok" data-ru="Участие в концертах и выступлениях">Sahna chiqishlari va konsertlarda ishtirok</li>
+            <li class="em" data-uz="🔥 Eng foydali: ko'proq natija + iqtisodiy jihatdan qulay"
+                           data-ru="🔥 Лучший выбор: максимальный результат + экономия">🔥 Eng foydali: ko'proq natija + iqtisodiy jihatdan qulay</li>
           </ul>
-          <div class="details-section-title">Abonement tafsilotlari</div>
-          <div class="meta-row">
-            <span class="meta-item">📚 Jami darslar soni: 48 ta</span>
-            <span class="meta-item">🕐 Dars davomiyligi: 45 daqiqa</span>
-            <span class="meta-item">👤 Dars jarayoni: Yakka tartibda (individual)</span>
-          </div>
-          <div class="price-block-full" style="border-color:rgba(46,204,113,0.25); background:rgba(46,204,113,0.05);">
-            <div class="p-old">6 000 000 so'm</div>
-            <div class="p-new" style="color:#2ecc71;">3 360 000 so'm / 6 oy</div>
-            <div class="p-per">70 000 so'm / dars</div>
-            <div class="p-save" style="color:#2ecc71;">🔥 2 640 000 so'm tejaysiz!</div>
+          <div class="dt" data-uz="Tafsilotlar" data-ru="Детали">Tafsilotlar</div>
+          <div class="meta-r">
+            <span class="meta-i" data-uz="📚 Jami darslar soni: 48 ta"     data-ru="📚 Всего уроков: 48">📚 Jami darslar soni: 48 ta</span>
+            <span class="meta-i" data-uz="🕐 Dars davomiyligi: 45 daqiqa"  data-ru="🕐 Длительность: 45 минут">🕐 Dars davomiyligi: 45 daqiqa</span>
+            <span class="meta-i" data-uz="👤 Yakka tartibda (individual)"  data-ru="👤 Формат: индивидуально">👤 Yakka tartibda (individual)</span>
           </div>
         </div>
       </div>
-      <button class="expand-btn">
-        <span class="btn-label">Batafsil</span>
-        <span class="expand-icon">▼</span>
+      <button class="exp-btn" onclick="toggleCard(this.closest('.group-card'))">
+        <span class="btn-lbl" data-uz="Batafsil" data-ru="Подробнее">Batafsil</span>
+        <span class="exp-icon">▼</span>
       </button>
     </div>
  
-  </div>
+  </div><!-- /grid -->
 </section>
 
 <!-- TESTIMONIALS -->
@@ -1695,7 +1734,11 @@ function closeMenu() {
   document.querySelectorAll('.hamburger span').forEach(b => { b.style.transform = ''; b.style.opacity = ''; });
 }
 
-/* ===== FORM ===== */
+// ============================================================
+// ЗАМЕНИТЕ старую функцию handleSubmit в вашем index.html
+// на этот код (полностью, включая async function)
+// ============================================================
+
 async function handleSubmit(e) {
   e.preventDefault();
 
@@ -1707,12 +1750,9 @@ async function handleSubmit(e) {
   const name  = inputs[0].value.trim();
   const phone = inputs[1].value.trim();
 
-  // ============================================================
+  // Telegram (резервный канал — всегда работает)
   const TELEGRAM_TOKEN   = '8782508997:AAEvSJ2m1dPv9ENWp5yUC92HRlPsIvkHoWE';
   const TELEGRAM_CHAT_ID = '553363897';
-  const EDUTIZIM_KEY     = 'dev:c481c1db0f380e09cc5c700e9d1d2f68';
-  const EDUTIZIM_URL     = 'https://edutizim.uz/api/leads';
-  // ============================================================
 
   btn.textContent = currentLang === 'uz' ? 'Yuborilmoqda...' : 'Отправка...';
   btn.disabled = true;
@@ -1720,32 +1760,84 @@ async function handleSubmit(e) {
 
   const now = new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent' });
 
-  // 1. Отправка в edutizim.uz
+  // 1. Отправка в edutizim через наш прокси /api/lead (без CORS!)
   try {
-    const res = await fetch(EDUTIZIM_URL, {
+    const res = await fetch('/api/lead', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': EDUTIZIM_KEY
-      },
-      body: JSON.stringify({
-        name:    name,
-        phone:   phone,
-        source:  'Royal Music School — сайт',
-        comment: 'Заявка на бесплатный пробный урок (Gitara kursi)',
-        date:    now
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone })
     });
-    console.log('edutizim status:', res.status);
-  } catch(err) {
-    console.warn('edutizim error:', err);
+    const data = await res.json();
+    console.log('edutizim ✅', data);
+  } catch (err) {
+    console.warn('edutizim proxy error:', err);
   }
 
-  // 2. Дублирование в Telegram (подстраховка)
+  // 2. Дублирование в Telegram (страховка)
   const tgText = `🎸 Yangi o'quvchi!\n👤 Ism: ${name}\n📞 Tel: ${phone}\n🕐 Vaqt: ${now}`;
   new Image().src = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(tgText)}`;
 
   // 3. Показать успех
+  setTimeout(() => {
+    form.style.display = 'none';
+    thanks.textContent = currentLang === 'uz'
+      ? "✓ Rahmat! Tez orada siz bilan bog'lanamiz."
+      : '✓ Спасибо! Мы свяжемся с вами в ближайшее время.';
+    thanks.style.display = 'block';
+  }, 700);
+}// ============================================================
+// ЗАМЕНИТЕ старую функцию handleSubmit в вашем index.html
+// на этот код (полностью, включая async function)
+// ============================================================
+
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  const form = document.querySelector('.signup-form');
+  const thanks = document.getElementById('thanks');
+  const btn = form.querySelector('button[type="submit"]');
+
+  const inputs = form.querySelectorAll('input');
+  const name  = inputs[0].value.trim();
+  const phone = inputs[1].value.trim();
+
+  const TELEGRAM_TOKEN   = '8782508997:AAEvSJ2m1dPv9ENWp5yUC92HRlPsIvkHoWE';
+  const TELEGRAM_CHAT_ID = '553363897';
+
+  btn.textContent = currentLang === 'uz' ? 'Yuborilmoqda...' : 'Отправка...';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+
+  const now = new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent' });
+
+  // Определяем — локал или Vercel
+  const isLocal = window.location.hostname === 'localhost' ||
+                  window.location.hostname === '127.0.0.1' ||
+                  window.location.port !== '';
+
+  if (!isLocal) {
+    // === НА VERCEL: отправляем через прокси /api/lead ===
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone })
+      });
+      const data = await res.json();
+      console.log('edutizim ✅', data);
+    } catch (err) {
+      console.warn('edutizim proxy error:', err);
+    }
+  } else {
+    // === ЛОКАЛЬНО: прокси недоступен, пропускаем edutizim ===
+    console.log('🔧 Локальный режим — edutizim пропущен, работает только Telegram');
+  }
+
+  // Telegram — работает везде (и локально и на Vercel)
+  const tgText = `🎸 Yangi o'quvchi!\n👤 Ism: ${name}\n📞 Tel: ${phone}\n🕐 Vaqt: ${now}`;
+  new Image().src = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(tgText)}`;
+
+  // Показать успех
   setTimeout(() => {
     form.style.display = 'none';
     thanks.textContent = currentLang === 'uz'
@@ -1980,6 +2072,49 @@ document.addEventListener('DOMContentLoaded', function() {
     io.observe(el);
   });
 })();
+
+/* ── ONE CARD AT A TIME ── */
+function toggleCard(card) {
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.group-card.open').forEach(c => {
+    c.classList.remove('open');
+    syncLabel(c);
+  });
+  if (!isOpen) {
+    card.classList.add('open');
+    syncLabel(card);
+  }
+}
+ 
+function syncLabel(card) {
+  const lang  = document.documentElement.getAttribute('data-lang') || 'uz';
+  const label = card.querySelector('.btn-lbl');
+  if (!label) return;
+  if (card.classList.contains('open')) {
+    label.textContent = lang === 'ru' ? 'Свернуть' : 'Yopish';
+  } else {
+    label.textContent = lang === 'ru' ? 'Подробнее' : 'Batafsil';
+  }
+}
+ 
+/* ── LANGUAGE ── */
+function setLang(lang) {
+  document.documentElement.setAttribute('data-lang', lang);
+  document.querySelectorAll('[data-uz][data-ru]').forEach(el => {
+    if (el.classList.contains('btn-lbl')) return; // handled by syncLabel
+    el.textContent = el.getAttribute('data-' + lang) || el.textContent;
+  });
+  document.querySelectorAll('.group-card').forEach(syncLabel);
+  document.getElementById('buz').classList.toggle('active', lang === 'uz');
+  document.getElementById('bru').classList.toggle('active', lang === 'ru');
+}
+ 
+/* ── THEME ── */
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('bdk').classList.toggle('active', t === 'dark');
+  document.getElementById('blt').classList.toggle('active', t === 'light');
+}
 </script>
 </body>
 </html>
