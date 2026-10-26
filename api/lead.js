@@ -16,14 +16,23 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, phone } = req.body;
+  // Ключ хранится в Vercel → Project Settings → Environment Variables, не в коде
+  const EDUTIZIM_KEY = process.env.EDUTIZIM_KEY;
+  const EDUTIZIM_URL = 'https://edutizim.uz/api/leads';
+
+  if (!EDUTIZIM_KEY) {
+    console.error('EDUTIZIM_KEY is not set');
+    return res.status(500).json({
+      success: false,
+      error: 'EDUTIZIM_KEY is not configured on the server'
+    });
+  }
+
+  const { name, phone } = req.body || {};
 
   if (!name || !phone) {
     return res.status(400).json({ error: 'name и phone обязательны' });
   }
-
-  const EDUTIZIM_KEY = 'dev:c481c1db0f380e09cc5c700e9d1d2f68';
-  const EDUTIZIM_URL = 'https://edutizim.uz/api/leads';
 
   const now = new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent' });
 
@@ -45,8 +54,9 @@ export default async function handler(req, res) {
 
     const data = await edutizimRes.json().catch(() => ({}));
 
+    // success = false, если edutizim отклонил запрос (например, неверный ключ)
     return res.status(200).json({
-      success: true,
+      success: edutizimRes.ok,
       edutizim_status: edutizimRes.status,
       edutizim_response: data
     });
