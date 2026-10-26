@@ -744,6 +744,7 @@ body.dark .hero h1 em {
 }
 .form-input:focus { border-color:var(--orange); }
 .form-input::placeholder { color:var(--text-faint); }
+.hp { position:absolute!important; left:-9999px; width:1px; height:1px; opacity:0; pointer-events:none; }
 
 /* CONTACTS */
 .contacts { padding:80px 60px; background:var(--bg); border-top:1px solid var(--border); }
@@ -1607,6 +1608,7 @@ footer p { font-size:12px; color:var(--text-faint); }
   <form class="signup-form" onsubmit="handleSubmit(event)">
     <input type="text" class="form-input" data-ph-uz="Ismingiz" data-ph-ru="Ваше имя" placeholder="Ismingiz" required>
     <input type="tel"  class="form-input" data-ph-uz="Telefon raqamingiz" data-ph-ru="Номер телефона" placeholder="Telefon raqamingiz" required>
+    <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button type="submit" class="btn-primary" style="width:100%;text-align:center;" data-uz="Sinov darsiga yozilish →" data-ru="Записаться на пробный урок →">Sinov darsiga yozilish →</button>
   </form>
   <p id="thanks" style="display:none;margin-top:22px;color:var(--orange);font-family:Oswald,sans-serif;font-size:20px;position:relative;z-index:2;"></p>
@@ -1734,61 +1736,35 @@ function closeMenu() {
   document.querySelectorAll('.hamburger span').forEach(b => { b.style.transform = ''; b.style.opacity = ''; });
 }
 
-// ============================================================
-// ЗАМЕНИТЕ старую функцию handleSubmit в вашем index.html
-// на этот код (полностью, включая async function)
-// ============================================================
+/* ===== LEAD FORM ===== */
+// Arizalar umumiy Google Apps Script "ROYAL leads" orqali Telegram'ga boradi (vokal sahifasi bilan bir xil).
+// Bu yerda faqat skriptning /exec manzili turadi; bot tokeni sahifada YO'Q.
+const LEAD_URL = 'https://script.google.com/macros/s/AKfycbyNODST5byuMIdbhtoQH-HYRLrfJC2YsQU3qjbhFmqW9jlFP98ha4EtcUle9t1_pGhQjw/exec';
 
-async function handleSubmit(e) {
-  e.preventDefault();
+async function send(payload) {
+  try {
+    // text/plain — "oddiy" so'rov: Apps Script CORS preflight'ni qo'llamaydi.
+    const res = await fetch(LEAD_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+    if (!res.ok) return false;
+    const data = await res.json().catch(() => null);
+    return !!(data && data.ok);
+  } catch (err) { return false; }
+}
 
-  const form = document.querySelector('.signup-form');
-  const thanks = document.getElementById('thanks');
-  const btn = form.querySelector('button[type="submit"]');
-
-  const inputs = form.querySelectorAll('input');
-  const name  = inputs[0].value.trim();
-  const phone = inputs[1].value.trim();
-
-  // Telegram (резервный канал — всегда работает)
-  const TELEGRAM_TOKEN   = '8782508997:AAEvSJ2m1dPv9ENWp5yUC92HRlPsIvkHoWE';
-  const TELEGRAM_CHAT_ID = '553363897';
-
-  btn.textContent = currentLang === 'uz' ? 'Yuborilmoqda...' : 'Отправка...';
-  btn.disabled = true;
-  btn.style.opacity = '0.7';
-
-  const now = new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent' });
-
-  // 1. Отправка в edutizim через наш прокси /api/lead (без CORS!)
+// edutizim CRM — Vercel'dagi /api/lead proksi orqali (lokal serverda u yo'q).
+async function sendCrm(name, phone) {
+  const h = window.location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || window.location.port !== '') return false;
   try {
     const res = await fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, phone })
     });
-    const data = await res.json();
-    console.log('edutizim ✅', data);
-  } catch (err) {
-    console.warn('edutizim proxy error:', err);
-  }
-
-  // 2. Дублирование в Telegram (страховка)
-  const tgText = `🎸 Yangi o'quvchi!\n👤 Ism: ${name}\n📞 Tel: ${phone}\n🕐 Vaqt: ${now}`;
-  new Image().src = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(tgText)}`;
-
-  // 3. Показать успех
-  setTimeout(() => {
-    form.style.display = 'none';
-    thanks.textContent = currentLang === 'uz'
-      ? "✓ Rahmat! Tez orada siz bilan bog'lanamiz."
-      : '✓ Спасибо! Мы свяжемся с вами в ближайшее время.';
-    thanks.style.display = 'block';
-  }, 700);
-}// ============================================================
-// ЗАМЕНИТЕ старую функцию handleSubmit в вашем index.html
-// на этот код (полностью, включая async function)
-// ============================================================
+    const data = await res.json().catch(() => null);
+    return !!(data && data.success);
+  } catch (err) { return false; }
+}
 
 async function handleSubmit(e) {
   e.preventDefault();
@@ -1799,52 +1775,43 @@ async function handleSubmit(e) {
 
   const inputs = form.querySelectorAll('input');
   const name  = inputs[0].value.trim();
-  const phone = inputs[1].value.trim();
+  let phone = inputs[1].value.replace(/[^\d+]/g, '');
+  const website = form.querySelector('input[name="website"]').value;
 
-  const TELEGRAM_TOKEN   = '8782508997:AAEvSJ2m1dPv9ENWp5yUC92HRlPsIvkHoWE';
-  const TELEGRAM_CHAT_ID = '553363897';
+  const uz = currentLang === 'uz';
+  thanks.style.display = 'none';
+  if (!/^(\+?998)?\d{9}$/.test(phone)) {
+    thanks.textContent = uz ? "Telefon raqami +998 bilan, 9 ta raqam bo'lsin." : 'Номер должен начинаться с +998 и содержать 9 цифр.';
+    thanks.style.display = 'block';
+    return;
+  }
+  if (!phone.startsWith('+')) phone = '+' + (phone.startsWith('998') ? phone : '998' + phone);
 
-  btn.textContent = currentLang === 'uz' ? 'Yuborilmoqda...' : 'Отправка...';
+  const label = btn.textContent;
+  btn.textContent = uz ? 'Yuborilmoqda...' : 'Отправка...';
   btn.disabled = true;
   btn.style.opacity = '0.7';
 
-  const now = new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent' });
+  const [tgOk, crmOk] = await Promise.all([
+    send({ name: name || '—', phone, course: 'Gitara', plan: '', form: 'bottom', lang: currentLang,
+      page: location.href.split('#')[0], website }),
+    website ? false : sendCrm(name, phone)
+  ]);
 
-  // Определяем — локал или Vercel
-  const isLocal = window.location.hostname === 'localhost' ||
-                  window.location.hostname === '127.0.0.1' ||
-                  window.location.port !== '';
-
-  if (!isLocal) {
-    // === НА VERCEL: отправляем через прокси /api/lead ===
-    try {
-      const res = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone })
-      });
-      const data = await res.json();
-      console.log('edutizim ✅', data);
-    } catch (err) {
-      console.warn('edutizim proxy error:', err);
-    }
-  } else {
-    // === ЛОКАЛЬНО: прокси недоступен, пропускаем edutizim ===
-    console.log('🔧 Локальный режим — edutizim пропущен, работает только Telegram');
-  }
-
-  // Telegram — работает везде (и локально и на Vercel)
-  const tgText = `🎸 Yangi o'quvchi!\n👤 Ism: ${name}\n📞 Tel: ${phone}\n🕐 Vaqt: ${now}`;
-  new Image().src = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(tgText)}`;
-
-  // Показать успех
-  setTimeout(() => {
+  btn.disabled = false;
+  btn.style.opacity = '';
+  btn.textContent = label;
+  if (tgOk || crmOk) {
     form.style.display = 'none';
-    thanks.textContent = currentLang === 'uz'
+    thanks.textContent = uz
       ? "✓ Rahmat! Tez orada siz bilan bog'lanamiz."
       : '✓ Спасибо! Мы свяжемся с вами в ближайшее время.';
-    thanks.style.display = 'block';
-  }, 700);
+  } else {
+    thanks.textContent = uz
+      ? "Yuborilmadi. Iltimos, qo'ng'iroq qiling: +998 77 260 40 40"
+      : 'Не отправилось. Пожалуйста, позвоните: +998 77 260 40 40';
+  }
+  thanks.style.display = 'block';
 }
 
 /* ===== INTERACTIVE GUITAR ENGINE ===== */
